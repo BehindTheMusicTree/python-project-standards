@@ -10,7 +10,7 @@ This repository is versioned **independently** from consumer repositories. Versi
 | **MINOR** | Backward-compatible additions: new optional workflow inputs, new templates, new docs, new reusable entry points. Existing callers keep working without changes. |
 | **PATCH** | Fixes, clarifications, typo-only or docs-only corrections; no intended behavior change for callers. |
 
-`STANDARDS_VERSION` in this repo (and in consumer repos) uses **`MAJOR.MINOR.PATCH`** without a `v` prefix. Git tags use the **`v` prefix** (for example `v1.0.0`) so they are clearly distinguished from branch names.
+`STANDARDS_VERSION` in this repo (and in consumer repos) uses **`MAJOR.MINOR.PATCH`** without a `v` prefix. Git tags use the **`v` prefix** (for example `v2.0.0`) so they are clearly distinguished from branch names.
 
 ## What consumers should pin
 
@@ -48,7 +48,7 @@ Do this from a clean working tree on **`main`** (or your default branch).
    - Set root **`STANDARDS_VERSION`** to **`X.Y.Z`** (no `v`).
 
 3. **Commit**  
-   - One commit for the release prep, for example: `chore(release): v1.0.0`.
+   - One commit for the release prep, for example: `chore(release): v2.0.0`.
 
 4. **Tag**  
    - Create an annotated tag: `git tag -a vX.Y.Z -m "vX.Y.Z"`  

@@ -16,7 +16,7 @@ Reusable workflows are resolved **at CI runtime** from this repository. Template
 Prefer a **release tag** or **commit SHA**, not `main`:
 
 ```yaml
-uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
+uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.0.0
 ```
 
 Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](versioning.md).
@@ -50,7 +50,7 @@ The **`verify-python-project-standards`** hook checks that CI references **`pre-
 Create a `STANDARDS_VERSION` file in the consumer repository:
 
 ```text
-1.0.0
+2.0.0
 ```
 
 ## 5. CI alignment check

@@ -18,7 +18,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
-- Pin the callee ref (**prefer `@v1.0.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
+- Pin the callee ref (**prefer `@v2.0.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
 
 ## Reference workflows
 
@@ -32,7 +32,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ```yaml
 jobs:
   pre-commit:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.0.0
     with:
       python-version: "3.14"
       install-command: |
@@ -54,7 +54,7 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.0.0
 ```
 
 Override inputs only when needed (see table below).
@@ -73,7 +73,7 @@ on:
 
 jobs:
   tests:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v1.0.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v2.0.0
     with:
       os-matrix: '["ubuntu-latest", "macos-latest"]'
       python-matrix: '["3.11", "3.12"]'
