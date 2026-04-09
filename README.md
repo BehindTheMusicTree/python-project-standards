@@ -37,7 +37,7 @@ This repository provides a shared baseline for Python projects so teams can:
 - `templates/pre-commit/`: baseline `.pre-commit-config.yaml` (includes **`verify-python-project-standards`** hook).
 - `templates/scripts/`: `verify-standards.sh` — copy into consumer `scripts/` next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
-- `.github/workflows/reusable-*.yml`: **callable** workflows (central lint/test matrix) for repos that reference this repository instead of duplicating YAML.
+- `.github/workflows/reusable-*.yml`: **callable** workflows (central lint/test matrix) for repos that reference this repository instead of duplicating YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
 - `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files.
 - `docs/`: migration guide and standards versioning model.
 - `scripts/`: validation helpers for standards adoption.

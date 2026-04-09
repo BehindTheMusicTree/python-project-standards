@@ -17,6 +17,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 ### Documentation
 
 - README / migration guide: copy `verify-standards.sh` with the pre-commit template; release checklist note to keep template script in sync.
+- [docs/reusable-workflows.md](docs/reusable-workflows.md): **Naming** section documents the optional `reusable-` prefix (convention vs GitHub requirement, alternatives, rename = breaking for `uses:` paths).
 
 ## [1.0.0] - 2026-04-09
 

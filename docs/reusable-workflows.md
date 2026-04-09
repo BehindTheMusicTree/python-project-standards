@@ -2,6 +2,19 @@
 
 This repository publishes **callable** workflows under `.github/workflows/`. Consumer repositories run them with `jobs.<job_id>.uses` so lint and test logic stay centralized.
 
+## Naming: `reusable-` prefix
+
+**GitHub does not require any filename pattern.** A workflow is reusable because its `on:` block includes `workflow_call`, not because of its name.
+
+This repository uses the **`reusable-` prefix** as an **organizational convention**:
+
+- **Clarity:** In `.github/workflows/`, it is obvious which files exist only to be **`uses:`’d** by other repos (or by thin caller workflows here) versus workflows that **trigger on `push` / `pull_request`**.
+- **Discovery:** Contributors and reviewers can grep for `reusable-` when looking for callable entry points.
+
+**Alternatives** that are equally valid elsewhere: no prefix with a subfolder (e.g. `.github/workflows/callable/lint.yml`), or another consistent scheme. Pick one convention per repository and stick to it.
+
+**Renaming** a published reusable file is a **breaking change** for every consumer `uses:` path; treat renames like API changes (semver major or migration notes).
+
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
