@@ -10,6 +10,7 @@ Organization-wide baseline standards for Python repositories: pinned tooling, pr
 - [Usage Model](#usage-model)
 - [Design Principles](#design-principles)
 - [Quick Start (Consumer Repo)](#quick-start-consumer-repo)
+- [Adoption tiers](#adoption-tiers)
 - [Reusable GitHub Actions](#reusable-github-actions)
 - [Status](#status)
 
@@ -64,15 +65,35 @@ cp templates/pyproject/pyproject.toml /path/to/repo/pyproject.toml
 
 Then adjust package metadata and local exceptions.
 
+## Adoption tiers
+
+Not every Python repo should use the same CI shape. Use these tiers:
+
+| Tier | Typical repo | Use from this repo | Keep local |
+|------|----------------|-------------------|------------|
+| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | [`reusable-lint.yml`](.github/workflows/reusable-lint.yml), [`reusable-test-matrix.yml`](.github/workflows/reusable-test-matrix.yml), templates | Overrides via `with:` only |
+| **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) (or [`reusable-lint.yml`](.github/workflows/reusable-lint.yml)), pre-commit + policy templates | Full test / deploy workflows in the app repository |
+
+**Pinning:** After the first release tag, consumer workflows should reference **`@v1.0.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+
+**Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
+
 ## Reusable GitHub Actions
 
 For orgs that keep this repo as the single source of truth, consumer workflows can call:
 
-- `.github/workflows/reusable-lint.yml` — pre-commit on one runner.
-- `.github/workflows/reusable-test-matrix.yml` — OS × Python matrix, optional unit/integration/e2e/coverage commands.
+- `.github/workflows/reusable-lint.yml` — checkout, install, run `pre-commit` (same steps as pre-commit tier).
+- `.github/workflows/reusable-pre-commit.yml` — thin entry point for Tier B; forwards to `reusable-lint.yml` so API repos name CI jobs clearly.
+- `.github/workflows/reusable-test-matrix.yml` — OS × Python matrix, optional unit/integration/e2e/coverage steps, optional pytest cache, configurable `fail-fast`.
 
 See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples and the full input list.
 
+## Releases
+
+Versions are **SemVer** (`v1.2.3` tags, `STANDARDS_VERSION` without `v`). Maintainers document changes in **`CHANGELOG.md`**, tag **`vX.Y.Z`**, and publish a **GitHub Release** with the same notes. Consumers pin callable workflows to that tag (or a commit SHA), not to `main` long term.
+
+See **[docs/versioning.md](docs/versioning.md)** for bump rules, pinning guidance, and step-by-step release instructions.
+
 ## Status
 
-Initial baseline scaffold. Evolve this repository with versioned, documented changes.
+Baseline is **versioned**; evolve via tagged releases and migration notes, not only through `main`.

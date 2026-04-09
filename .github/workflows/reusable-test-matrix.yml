@@ -45,13 +45,21 @@ on:
         required: false
         type: string
         default: ""
+      fail-fast:
+        required: false
+        type: boolean
+        default: true
+      cache-pytest:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   tests:
     name: Test (${{ matrix.os }}, py${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: ${{ inputs.fail-fast }}
       matrix:
         os: ${{ fromJson(inputs.os-matrix) }}
         python-version: ${{ fromJson(inputs.python-matrix) }}
@@ -79,6 +87,13 @@ jobs:
 
       - name: Install dependencies
         run: ${{ inputs.install-command }}
+
+      - name: Cache pytest
+        if: inputs.cache-pytest
+        uses: actions/cache@v4
+        with:
+          path: .pytest_cache
+          key: pytest-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('requirements.txt') }}
 
       - name: Run unit tests
         if: inputs.unit-command != '' && runner.os != 'Windows'

@@ -5,14 +5,28 @@ This repository publishes **callable** workflows under `.github/workflows/`. Con
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
-- Pin the callee ref (`@v1`, `@main`, or a commit SHA). Prefer a tag or SHA for stability.
+- Pin the callee ref (**prefer `@v1.0.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
 
 ## Reference workflows
 
 | File | Purpose |
 |------|---------|
 | [`reusable-lint.yml`](../.github/workflows/reusable-lint.yml) | Checkout, install, run `pre-commit`. |
-| [`reusable-test-matrix.yml`](../.github/workflows/reusable-test-matrix.yml) | Matrix of OS × Python; install; optional unit, integration, e2e, and coverage steps. |
+| [`reusable-pre-commit.yml`](../.github/workflows/reusable-pre-commit.yml) | Same behavior as `reusable-lint.yml`; forwards to it (Tier B naming). |
+| [`reusable-test-matrix.yml`](../.github/workflows/reusable-test-matrix.yml) | Matrix of OS × Python; install; optional pytest cache, `fail-fast`, unit, integration, e2e, and coverage steps. |
+
+## Example: pre-commit only (Tier B)
+
+```yaml
+jobs:
+  pre-commit:
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
+    with:
+      python-version: "3.14"
+      install-command: |
+        python -m pip install --upgrade pip
+        pip install pre-commit==4.5.1
+```
 
 ## Example: lint caller
 
@@ -28,7 +42,7 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-lint.yml@main
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-lint.yml@v1.0.0
 ```
 
 Override inputs only when needed (see table below).
@@ -47,7 +61,7 @@ on:
 
 jobs:
   tests:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@main
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v1.0.0
     with:
       os-matrix: '["ubuntu-latest", "macos-latest"]'
       python-matrix: '["3.11", "3.12"]'
@@ -85,3 +99,5 @@ If you only set matrices (or use defaults), the reusable workflow runs **`e2e-co
 | `integration-command` | string | `""` | Integration tests (skipped on Windows). |
 | `e2e-command` | string | `pytest -q` | Main test command; runs on all matrix OS unless set empty. |
 | `coverage-command` | string | `""` | e.g. coverage threshold check (skipped on Windows). |
+| `fail-fast` | boolean | `true` | Matrix `fail-fast` (cancel other matrix jobs on first failure when `true`). |
+| `cache-pytest` | boolean | `false` | Restore/save `.pytest_cache` keyed by OS, Python, `pyproject.toml`, `requirements.txt`. |

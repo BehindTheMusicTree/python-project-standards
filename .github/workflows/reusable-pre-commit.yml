@@ -1,0 +1,37 @@
+name: Reusable Pre-commit
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        required: false
+        type: string
+        default: ubuntu-latest
+      python-version:
+        required: false
+        type: string
+        default: "3.12"
+      pre-install-command:
+        required: false
+        type: string
+        default: ""
+      install-command:
+        required: false
+        type: string
+        default: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      pre-commit-command:
+        required: false
+        type: string
+        default: pre-commit run --all-files
+
+jobs:
+  pre-commit:
+    uses: ./.github/workflows/reusable-lint.yml
+    with:
+      runs-on: ${{ inputs.runs-on }}
+      python-version: ${{ inputs.python-version }}
+      pre-install-command: ${{ inputs.pre-install-command }}
+      install-command: ${{ inputs.install-command }}
+      pre-commit-command: ${{ inputs.pre-commit-command }}
