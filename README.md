@@ -27,7 +27,7 @@ This repository provides a shared baseline for Python projects so teams can:
 
 - `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
-- CI workflow baseline for `pre-commit` and tests;
+- CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-lint.yml`** (pin `@v…`); tests via **`reusable-test-matrix.yml`** caller when possible;
 - Cursor rules baseline for process conventions;
 - migration and versioning guidance.
 
@@ -74,7 +74,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 
 | Tier | Typical repo | Use from this repo | Keep local |
 |------|----------------|-------------------|------------|
-| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | [`reusable-lint.yml`](.github/workflows/reusable-lint.yml), [`reusable-test-matrix.yml`](.github/workflows/reusable-test-matrix.yml), templates | Overrides via `with:` only |
+| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-lint.yml`](.github/workflows/reusable-lint.yml) + [`reusable-test-matrix.yml`](.github/workflows/reusable-test-matrix.yml) via thin `.github/workflows/*.yml` callers (`uses:` … `@v…`); templates | Caller YAML only; overrides via `with:` |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) (or [`reusable-lint.yml`](.github/workflows/reusable-lint.yml)), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
 **Pinning:** After the first release tag, consumer workflows should reference **`@v1.0.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).

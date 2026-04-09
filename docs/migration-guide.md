@@ -6,7 +6,7 @@ Use this guide to adopt the baseline in an existing repository.
 
 | Artifact | What it is | When to use |
 |----------|------------|-------------|
-| `templates/github-workflows/*.yml` | **Copy-paste** starters for a consumer repo | New repos or teams that want a full workflow file in-tree without `uses:` |
+| `templates/github-workflows/*.yml` | **Copy-paste** starters (e.g. `lint.yml` delegates via `uses:` to org reusables) | New repos; `lint.yml` stays a thin caller pinned to `@v…` |
 | `.github/workflows/reusable-*.yml` | **Callable** workflows in `python-project-standards` | Repos that call `uses: org/python-project-standards/.github/workflows/....yml@ref` and pass `with:` inputs |
 
 Reusable workflows are resolved **at CI runtime** from this repository. Templates are **static copies** you own and drift unless you sync manually.
@@ -25,7 +25,7 @@ Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](
 
 - Copy `templates/pre-commit/.pre-commit-config.yaml` to repository root.
 - Copy `templates/scripts/verify-standards.sh` to `scripts/verify-standards.sh` and `chmod +x` it (the template pre-commit includes **`verify-python-project-standards`**, which runs this script).
-- Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` (or call the central reusable workflows; see [reusable-workflows.md](reusable-workflows.md)).
+- Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` — it **delegates** lint to [reusable-lint.yml](../.github/workflows/reusable-lint.yml) (`uses:` … `@v…`; bump the tag with `STANDARDS_VERSION`). For tests, prefer a caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) (see [reusable-workflows.md](reusable-workflows.md)) instead of inlining `pytest` steps.
 - Merge relevant sections from `templates/pyproject/pyproject.toml`.
 - Copy needed `.mdc` files into `.cursor/rules/`.
 
@@ -37,7 +37,7 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-The **`verify-python-project-standards`** hook checks Tier **A** (local `pre-commit run` in CI) and **B** (workflows referencing org `python-project-standards` reusables), ruff/mypy in pre-commit (remote mirrors **or** local `language: system` hooks), and `STANDARDS_VERSION` vs `@v…` pins when workflows use this org’s reusables. Set **`VERIFY_STANDARDS_SKIP_PIN_CHECK=1`** if you legitimately pin callables to a **SHA** instead of `@vX.Y.Z`.
+The **`verify-python-project-standards`** hook checks that CI references **`pre-commit run`** and/or org **`python-project-standards`** reusables (delegated **Tier A** `lint.yml` satisfies the latter), ruff/mypy in pre-commit (remote mirrors **or** local `language: system` hooks), and `STANDARDS_VERSION` vs `@v…` pins when workflows use this org’s reusables. Set **`VERIFY_STANDARDS_SKIP_PIN_CHECK=1`** if you legitimately pin callables to a **SHA** instead of `@vX.Y.Z`.
 
 ## 3. Add project-specific overrides
 
@@ -55,14 +55,8 @@ Create a `STANDARDS_VERSION` file in the consumer repository:
 
 ## 5. CI alignment check
 
-Ensure CI installs dev dependencies and runs:
+With the default **`lint.yml`** template, **pre-commit runs inside** [reusable-lint.yml](../.github/workflows/reusable-lint.yml) (install dev deps + `pre-commit run --all-files`). For tests, add a thin caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) rather than duplicating install/pytest steps (see [reusable-workflows.md](reusable-workflows.md)).
 
-```bash
-pre-commit run --all-files
-```
+## 6. Tier B (API / service)
 
-## 6. Optional: call reusable workflows instead of copying
-
-For **Tier A (library)** repos, prefer calling [reusable-lint.yml](../.github/workflows/reusable-lint.yml) and [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) from a small caller workflow (see [reusable-workflows.md](reusable-workflows.md)).
-
-For **Tier B (API / service)** repos, keep Docker, databases, and secrets in local workflows; optionally call [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) only.
+Keep Docker, databases, and secrets in local workflows; call [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (or `reusable-lint.yml`) for shared lint only.

@@ -1,3 +1,4 @@
+# Tier A (and optional Tier B): shared lint — delegate to org reusable (pin @v… to STANDARDS_VERSION).
 name: Lint
 
 on:
@@ -6,20 +7,5 @@ on:
     branches: [main]
 
 jobs:
-  pre-commit:
-    name: Pre-commit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5.0.1
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dev dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
-
-      - name: Run pre-commit
-        run: pre-commit run --all-files
+  lint:
+    uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-lint.yml@v1.0.0
