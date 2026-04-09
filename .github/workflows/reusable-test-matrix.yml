@@ -48,7 +48,7 @@ on:
       coverage-fail-under:
         required: false
         type: string
-        default: ""
+        default: "80"
       fail-fast:
         required: false
         type: boolean
@@ -116,5 +116,5 @@ jobs:
         run: ${{ inputs.coverage-command }}
 
       - name: Check coverage threshold (fail-under)
-        if: inputs.coverage-command == '' && inputs.coverage-fail-under != '' && runner.os != 'Windows'
+        if: inputs.coverage-command == '' && inputs.coverage-fail-under != '' && runner.os != 'Windows' && (inputs.unit-command != '' || inputs.integration-command != '' || contains(inputs.e2e-command, '--cov'))
         run: coverage report --fail-under=${{ inputs.coverage-fail-under }}

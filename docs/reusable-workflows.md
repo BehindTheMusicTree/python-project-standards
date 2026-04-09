@@ -18,7 +18,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
-- Pin the callee ref (**prefer `@v2.2.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
+- Pin the callee ref (**prefer `@v2.3.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
 
 ## Reference workflows
 
@@ -32,7 +32,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ```yaml
 jobs:
   pre-commit:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.2.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.3.0
     with:
       python-version: "3.14"
       install-command: |
@@ -54,7 +54,7 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.2.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.3.0
 ```
 
 Override inputs only when needed (see table below).
@@ -73,7 +73,7 @@ on:
 
 jobs:
   tests:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v2.2.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v2.3.0
     with:
       os-matrix: '["ubuntu-latest", "macos-latest"]'
       python-matrix: '["3.11", "3.12"]'
@@ -85,7 +85,7 @@ jobs:
 
 If you only set matrices (or use defaults), the reusable workflow runs **`e2e-command`** only for tests. Its default is `pytest -q`. **`unit-command`**, **`integration-command`**, and **`coverage-command`** default to empty and their steps are skipped.
 
-When **`coverage-command`** is empty and **`coverage-fail-under`** is set (e.g. `"85"`), the reusable runs **`coverage report --fail-under=<value>`** instead of requiring a full **`coverage-command`** line. If **`coverage-command`** is non-empty, it takes precedence and **`coverage-fail-under`** is ignored for that step.
+**Coverage (default):** **`coverage-fail-under`** defaults to **`"80"`**. When **`coverage-command`** is empty, the reusable runs **`coverage report --fail-under=<value>`** only if it looks like pytest produced coverage data: **`unit-command`** or **`integration-command`** is non-empty, or **`e2e-command`** contains the substring **`--cov`**. That avoids running **`coverage report`** on the minimal default **`pytest -q`** matrix (no coverage). Override the threshold with **`coverage-fail-under: "85"`** (or another value); set **`coverage-fail-under: ''`** to disable the fail-under step entirely. If **`coverage-command`** is non-empty, it runs instead and the fail-under shortcut is not used.
 
 **Windows note:** steps for **unit**, **integration**, and **coverage** are skipped when `runner.os == 'Windows'`. **e2e** runs on all matrix OS values when `e2e-command` is non-empty.
 
@@ -113,6 +113,6 @@ When **`coverage-command`** is empty and **`coverage-fail-under`** is set (e.g. 
 | `integration-command` | string | `""` | Integration tests (skipped on Windows). |
 | `e2e-command` | string | `pytest -q` | Main test command; runs on all matrix OS unless set empty. |
 | `coverage-command` | string | `""` | Custom coverage step (skipped on Windows). If non-empty, runs instead of the **`coverage-fail-under`** shortcut. |
-| `coverage-fail-under` | string | `""` | When **`coverage-command`** is empty, run **`coverage report --fail-under=<value>`** (e.g. `"85"`). Skipped on Windows with unit/integration/coverage. |
+| `coverage-fail-under` | string | `"80"` | When **`coverage-command`** is empty and the gate matches (see **Default test behavior**), run **`coverage report --fail-under=<value>`**. Use **`''`** to disable. Skipped on Windows with unit/integration/coverage. |
 | `fail-fast` | boolean | `true` | Matrix `fail-fast` (cancel other matrix jobs on first failure when `true`). |
 | `cache-pytest` | boolean | `false` | Restore/save `.pytest_cache` keyed by OS, Python, `pyproject.toml`, `requirements.txt`. |

@@ -6,9 +6,17 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-04-11
+
 ### Added
 
 - **`templates/pyproject/pyproject.toml`**: **`pytest-cov==4.0.0`** in **`[project.optional-dependencies] dev`** so **`pytest --cov=…`** works out of the box for Tier A-style CI (see **`reusable-test-matrix`**); consumers may still override or drop if they use **`coverage run -m pytest`** only.
+
+### Changed
+
+- **`reusable-test-matrix.yml`**: **`coverage-fail-under`** defaults to **`"80"`** and runs **`coverage report --fail-under=…`** when **`coverage-command`** is empty **only if** **`unit-command`** or **`integration-command`** is non-empty or **`e2e-command`** contains **`--cov`** (so the default **`pytest -q`** matrix does not run an empty coverage step). Set **`coverage-fail-under: ''`** to disable. Documented in [reusable-workflows.md](docs/reusable-workflows.md).
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`2.3.0`** / **`@v2.3.0`**.
 
 ## [2.2.0] - 2026-04-10
 
