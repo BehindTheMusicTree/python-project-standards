@@ -1,5 +1,7 @@
 # Migration Guide
 
+For a map of all org Python standards docs, start with **[development.md](development.md)**.
+
 Use this guide to adopt the baseline in an existing repository.
 
 ## Templates versus reusable workflows
@@ -16,7 +18,7 @@ Reusable workflows are resolved **at CI runtime** from this repository. Template
 Prefer a **release tag** or **commit SHA**, not `main`:
 
 ```yaml
-uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.0.0
+uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.1.0
 ```
 
 Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](versioning.md).
@@ -27,7 +29,7 @@ Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](
 - Copy `templates/scripts/verify-standards.sh` to `scripts/verify-standards.sh` and `chmod +x` it (the template pre-commit includes **`verify-python-project-standards`**, which runs this script).
 - Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` — it **delegates** to [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (`uses:` … `@v…`; bump the tag with `STANDARDS_VERSION`). For tests, prefer a caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) (see [reusable-workflows.md](reusable-workflows.md)) instead of inlining `pytest` steps.
 - Merge relevant sections from `templates/pyproject/pyproject.toml`.
-- Copy needed `.mdc` files into `.cursor/rules/`.
+- Copy needed **`templates/cursor-rules/*.mdc`** files into **`.cursor/rules/`** (org baselines are optional copies; merge with repo-specific rules). Include **`strenum-string-enums.mdc`** if you enforce [string enums](string-enums.md).
 
 ## 2. Install and validate
 
@@ -41,6 +43,7 @@ The **`verify-python-project-standards`** hook checks that CI references **`pre-
 
 ## 3. Add project-specific overrides
 
+- Follow shared Python style notes in this repo’s `docs/` where applicable (e.g. [string enumerations (`StrEnum`)](string-enums.md)).
 - Add `ruff` per-file ignores only when needed.
 - Add `mypy` overrides for tests only when needed.
 - Add local hooks for custom checks only when needed.
@@ -50,7 +53,7 @@ The **`verify-python-project-standards`** hook checks that CI references **`pre-
 Create a `STANDARDS_VERSION` file in the consumer repository:
 
 ```text
-2.0.0
+2.1.0
 ```
 
 ## 5. CI alignment check

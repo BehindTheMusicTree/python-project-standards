@@ -5,6 +5,7 @@ Organization-wide baseline standards for Python repositories: pinned tooling, pr
 ## Table of Contents
 
 - [Purpose](#purpose)
+- [Development documentation](#development-documentation)
 - [What Is Standardized](#what-is-standardized)
 - [Repository Layout](#repository-layout)
 - [Usage Model](#usage-model)
@@ -23,8 +24,13 @@ This repository provides a shared baseline for Python projects so teams can:
 - document process expectations in one place;
 - allow project-specific exceptions without forking standards.
 
+## Development documentation
+
+**[docs/development.md](docs/development.md)** is the hub for organization-wide Python development policy (links to migration, versioning, CI reusables, and style notes such as [string enums](docs/string-enums.md)). Point consumer `DEVELOPMENT.md` / contributor docs at that page for shared baselines.
+
 ## What Is Standardized
 
+- Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
 - `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
 - CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests via **`reusable-test-matrix.yml`** caller when possible;
@@ -38,8 +44,8 @@ This repository provides a shared baseline for Python projects so teams can:
 - `templates/scripts/`: `verify-standards.sh` — copy into consumer `scripts/` next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (central lint/test matrix) for repos that reference this repository instead of duplicating YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
-- `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files.
-- `docs/`: migration guide and standards versioning model.
+- `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
+- `docs/`: **[development.md](docs/development.md)** (hub), migration guide, versioning, reusable workflows, and style notes (e.g. [`string-enums.md`](docs/string-enums.md)).
 - `scripts/`: validation helpers for standards adoption.
 
 ## Usage Model
@@ -77,7 +83,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 | **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) + [`reusable-test-matrix.yml`](.github/workflows/reusable-test-matrix.yml) via thin `.github/workflows/*.yml` callers (`uses:` … `@v…`); templates | Caller YAML only; overrides via `with:` |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v2.0.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v2.1.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 

@@ -6,6 +6,21 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-04-09
+
+### Changed
+
+- **`templates/github-workflows/lint.yml`**: example **`uses:`** pin updated to **`@v2.1.0`**. README, [migration-guide.md](docs/migration-guide.md), and [reusable-workflows.md](docs/reusable-workflows.md) examples use **`@v2.1.0`** for current adoption.
+
+### Added
+
+- **`templates/cursor-rules/strenum-string-enums.mdc`**: Cursor baseline for `StrEnum` vs `(str, Enum)`; **`.cursor/rules/strenum-string-enums.mdc`** mirror for maintainers of this repository.
+
+### Documentation
+
+- **[docs/development.md](docs/development.md)**: hub for org-wide Python development policy (migration, versioning, reusables, [string-enums.md](docs/string-enums.md), README). README **Development documentation** section; **Cursor / AI assistant rules** (copy **`templates/cursor-rules/`** into consumers; diff on `STANDARDS_VERSION` bumps).
+- **[docs/string-enums.md](docs/string-enums.md)**: `StrEnum` vs `(str, Enum)`; **Enforcement** recommends Ruff **UP042** when **`UP`** is selected; optional AST hook / Cursor as extras. Linked from migration guide and hub.
+
 ## [2.0.0] - 2026-04-09
 
 ### Removed

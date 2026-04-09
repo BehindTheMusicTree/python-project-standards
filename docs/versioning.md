@@ -2,6 +2,14 @@
 
 This repository is versioned **independently** from consumer repositories. Versions communicate **compatibility and migration effort**, not a shipped Python package.
 
+## Table of Contents
+
+- [Semantic versioning (SemVer)](#semantic-versioning-semver)
+- [What consumers should pin](#what-consumers-should-pin)
+- [Release notes (what to include)](#release-notes-what-to-include)
+- [Releasing (maintainers)](#releasing-maintainers)
+- [History](#history)
+
 ## Semantic versioning (SemVer)
 
 | Bump | When |

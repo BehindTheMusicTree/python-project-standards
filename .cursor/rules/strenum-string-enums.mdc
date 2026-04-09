@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+
+# String enumerations (`StrEnum`)
+
+For enumerations whose members are **strings** (API keys, serializer field keys, error codes, filter keys, etc.), subclass **`enum.StrEnum`**. Do **not** use **`class Foo(str, Enum)`**.
+
+- Canonical doc in this repository: [docs/string-enums.md](../../docs/string-enums.md)
+- Hub: [docs/development.md](../../docs/development.md)
+
+If a call site requires a built-in `str` (e.g. `type(x) is str` instead of `isinstance`), pass **`str(member)`**.
+
+Ruff **UP042** (`replace-str-enum`) enforces this when **`UP`** is in `select` and `target-version` is 3.11+.
