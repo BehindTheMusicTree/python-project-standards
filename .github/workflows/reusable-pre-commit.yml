@@ -28,10 +28,22 @@ on:
 
 jobs:
   pre-commit:
-    uses: ./.github/workflows/reusable-lint.yml
-    with:
-      runs-on: ${{ inputs.runs-on }}
-      python-version: ${{ inputs.python-version }}
-      pre-install-command: ${{ inputs.pre-install-command }}
-      install-command: ${{ inputs.install-command }}
-      pre-commit-command: ${{ inputs.pre-commit-command }}
+    name: Pre-commit
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+
+      - name: Pre-install step
+        if: inputs.pre-install-command != ''
+        run: ${{ inputs.pre-install-command }}
+
+      - name: Install dependencies
+        run: ${{ inputs.install-command }}
+
+      - name: Run pre-commit
+        run: ${{ inputs.pre-commit-command }}

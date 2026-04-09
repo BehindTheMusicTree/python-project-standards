@@ -24,8 +24,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 
 | File | Purpose |
 |------|---------|
-| [`reusable-lint.yml`](../.github/workflows/reusable-lint.yml) | Checkout, install, run `pre-commit`. |
-| [`reusable-pre-commit.yml`](../.github/workflows/reusable-pre-commit.yml) | Same behavior as `reusable-lint.yml`; forwards to it (Tier B naming). |
+| [`reusable-pre-commit.yml`](../.github/workflows/reusable-pre-commit.yml) | Checkout, install, run `pre-commit` (Tier A and Tier B). |
 | [`reusable-test-matrix.yml`](../.github/workflows/reusable-test-matrix.yml) | Matrix of OS × Python; install; optional pytest cache, `fail-fast`, unit, integration, e2e, and coverage steps. |
 
 ## Example: pre-commit only (Tier B)
@@ -41,7 +40,7 @@ jobs:
         pip install pre-commit==4.5.1
 ```
 
-## Example: lint caller
+## Example: pre-commit caller (Tier A `lint.yml`)
 
 Create `.github/workflows/lint.yml` in the consumer repository:
 
@@ -55,7 +54,7 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-lint.yml@v1.0.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
 ```
 
 Override inputs only when needed (see table below).
@@ -88,7 +87,7 @@ If you only set matrices (or use defaults), the reusable workflow runs **`e2e-co
 
 **Windows note:** steps for **unit**, **integration**, and **coverage** are skipped when `runner.os == 'Windows'`. **e2e** runs on all matrix OS values when `e2e-command` is non-empty.
 
-## Inputs: `reusable-lint.yml`
+## Inputs: `reusable-pre-commit.yml`
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|

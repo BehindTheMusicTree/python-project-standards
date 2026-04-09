@@ -1,4 +1,4 @@
-# Tier A (and optional Tier B): shared lint — delegate to org reusable (pin @v… to STANDARDS_VERSION).
+# Tier A (and optional Tier B): shared pre-commit in CI — delegate to org reusable (pin @v… to STANDARDS_VERSION).
 name: Lint
 
 on:
@@ -8,4 +8,4 @@ on:
 
 jobs:
   lint:
-    uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-lint.yml@v1.0.0
+    uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0

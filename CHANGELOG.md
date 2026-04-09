@@ -6,9 +6,13 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Removed
+
+- **`reusable-lint.yml`**: removed; **`reusable-pre-commit.yml`** is the single callable for checkout → install → `pre-commit`. Consumers must replace `uses: …/reusable-lint.yml@…` with **`…/reusable-pre-commit.yml@…`** (same inputs).
+
 ### Changed
 
-- **`templates/github-workflows/lint.yml`**: delegates to **`reusable-lint.yml@v1.0.0`** instead of inlining checkout/install/pre-commit steps (shared linting). README adoption table and migration guide updated.
+- **`templates/github-workflows/lint.yml`**: delegates to **`reusable-pre-commit.yml@v1.0.0`** (was `reusable-lint.yml`). Tier A/B docs and examples updated.
 
 ### Added
 

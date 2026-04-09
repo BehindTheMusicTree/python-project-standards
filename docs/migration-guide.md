@@ -16,7 +16,7 @@ Reusable workflows are resolved **at CI runtime** from this repository. Template
 Prefer a **release tag** or **commit SHA**, not `main`:
 
 ```yaml
-uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-lint.yml@v1.0.0
+uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v1.0.0
 ```
 
 Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](versioning.md).
@@ -25,7 +25,7 @@ Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](
 
 - Copy `templates/pre-commit/.pre-commit-config.yaml` to repository root.
 - Copy `templates/scripts/verify-standards.sh` to `scripts/verify-standards.sh` and `chmod +x` it (the template pre-commit includes **`verify-python-project-standards`**, which runs this script).
-- Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` — it **delegates** lint to [reusable-lint.yml](../.github/workflows/reusable-lint.yml) (`uses:` … `@v…`; bump the tag with `STANDARDS_VERSION`). For tests, prefer a caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) (see [reusable-workflows.md](reusable-workflows.md)) instead of inlining `pytest` steps.
+- Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` — it **delegates** to [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (`uses:` … `@v…`; bump the tag with `STANDARDS_VERSION`). For tests, prefer a caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) (see [reusable-workflows.md](reusable-workflows.md)) instead of inlining `pytest` steps.
 - Merge relevant sections from `templates/pyproject/pyproject.toml`.
 - Copy needed `.mdc` files into `.cursor/rules/`.
 
@@ -55,8 +55,8 @@ Create a `STANDARDS_VERSION` file in the consumer repository:
 
 ## 5. CI alignment check
 
-With the default **`lint.yml`** template, **pre-commit runs inside** [reusable-lint.yml](../.github/workflows/reusable-lint.yml) (install dev deps + `pre-commit run --all-files`). For tests, add a thin caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) rather than duplicating install/pytest steps (see [reusable-workflows.md](reusable-workflows.md)).
+With the default **`lint.yml`** template, **pre-commit runs inside** [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (install dev deps + `pre-commit run --all-files`). For tests, add a thin caller to [reusable-test-matrix.yml](../.github/workflows/reusable-test-matrix.yml) rather than duplicating install/pytest steps (see [reusable-workflows.md](reusable-workflows.md)).
 
 ## 6. Tier B (API / service)
 
-Keep Docker, databases, and secrets in local workflows; call [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (or `reusable-lint.yml`) for shared lint only.
+Keep Docker, databases, and secrets in local workflows; call [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) for shared pre-commit in CI only.
