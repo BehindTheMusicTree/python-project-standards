@@ -14,6 +14,7 @@ dev = [
   "ruff==0.15.9",
   "mypy==1.18.2",
   "pytest==8.4.2",
+  "pytest-cov==4.0.0",
 ]
 
 [tool.ruff]

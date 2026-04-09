@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **`templates/pyproject/pyproject.toml`**: **`pytest-cov==4.0.0`** in **`[project.optional-dependencies] dev`** so **`pytest --cov=…`** works out of the box for Tier A-style CI (see **`reusable-test-matrix`**); consumers may still override or drop if they use **`coverage run -m pytest`** only.
+
 ## [2.2.0] - 2026-04-10
 
 ### Added

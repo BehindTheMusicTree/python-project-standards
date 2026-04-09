@@ -31,7 +31,7 @@ This repository provides a shared baseline for Python projects so teams can:
 ## What Is Standardized
 
 - Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
-- `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`);
+- `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
 - CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests via **`reusable-test-matrix.yml`** caller when possible;
 - Cursor rules baseline for process conventions;
