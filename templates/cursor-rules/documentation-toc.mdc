@@ -1,0 +1,24 @@
+---
+description: Markdown docs must include a table of contents aligned with headings
+globs: "**/*.md"
+alwaysApply: false
+---
+
+# Documentation: aligned table of contents
+
+When you add or edit **project documentation** in Markdown (`README.md`, `docs/**/*.md`, `CHANGELOG.md`, etc.):
+
+1. **Include a TOC** near the top: after the H1 title and any one-line blurb, add `## Table of Contents` before the first real content section.
+2. **Keep it aligned**: Every `##` section in the file appears as a TOC bullet **in the same order**, with an anchor link. Skip only headings that are not meant to be navigated (never link `## Table of Contents` itself).
+3. **Update in lockstep**: Renaming, adding, removing, or moving headings requires updating the TOC in the **same change**.
+4. **Anchors**: Use standard GitHub-style slugs: lower case, spaces → `-`, strip most punctuation, collapse duplicate hyphens (e.g. `## Quick Start (Consumer Repo)` → `#quick-start-consumer-repo`).
+5. **Depth**: For files with only `##`, list those. If you introduce meaningful `###` sections that readers jump to, extend the TOC consistently for that file (either all key `###` or none—avoid a partial random subset).
+
+```markdown
+## Table of Contents
+
+- [Purpose](#purpose)
+- [Setup](#setup)
+```
+
+When asked to write or refactor MD docs, apply this by default unless the file is trivial (e.g. a few lines with no `##` sections—in that case no TOC is required).

@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+
+# PR Description Workflow
+
+PR descriptions should be drafted from a local markdown template before opening PRs.
+
+Minimum sections:
+
+- Summary
+- Type of change
+- Test plan
+- Checklist
+
+Keep PR bodies focused on why and impact, not raw diffs.

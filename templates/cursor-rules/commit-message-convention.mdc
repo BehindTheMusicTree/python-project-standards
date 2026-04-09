@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+# Commit Message Convention
+
+Use Conventional Commits:
+
+`<type>(<optional-scope>): <summary>`
+
+Allowed types:
+
+- `feat`
+- `fix`
+- `refactor`
+- `docs`
+- `test`
+- `chore`
+- `style`
+- `perf`
+
+Rules:
+
+1. Use imperative mood in summary.
+2. Keep summary concise (about 70 chars max).
+3. Use lowercase type and scope.

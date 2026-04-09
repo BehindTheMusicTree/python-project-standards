@@ -1,0 +1,35 @@
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.9
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--fix]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+
+  # Example local hook for project-specific checks.
+  # Keep local hooks minimal and documented.
+  - repo: local
+    hooks:
+      - id: example-local-check
+        name: example local check
+        entry: python3 scripts/example_local_check.py
+        language: system
+        pass_filenames: false
+        stages: [manual]

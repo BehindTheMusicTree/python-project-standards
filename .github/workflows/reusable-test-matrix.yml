@@ -1,0 +1,97 @@
+name: Reusable Test Matrix
+
+on:
+  workflow_call:
+    inputs:
+      os-matrix:
+        required: false
+        type: string
+        default: '["ubuntu-latest"]'
+      python-matrix:
+        required: false
+        type: string
+        default: '["3.12"]'
+      install-command:
+        required: false
+        type: string
+        default: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      pre-install-ubuntu:
+        required: false
+        type: string
+        default: ""
+      pre-install-macos:
+        required: false
+        type: string
+        default: ""
+      pre-install-windows:
+        required: false
+        type: string
+        default: ""
+      unit-command:
+        required: false
+        type: string
+        default: ""
+      integration-command:
+        required: false
+        type: string
+        default: ""
+      e2e-command:
+        required: false
+        type: string
+        default: pytest -q
+      coverage-command:
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  tests:
+    name: Test (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJson(inputs.os-matrix) }}
+        python-version: ${{ fromJson(inputs.python-matrix) }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Pre-install (Ubuntu)
+        if: runner.os == 'Linux' && inputs.pre-install-ubuntu != ''
+        run: ${{ inputs.pre-install-ubuntu }}
+
+      - name: Pre-install (macOS)
+        if: runner.os == 'macOS' && inputs.pre-install-macos != ''
+        run: ${{ inputs.pre-install-macos }}
+
+      - name: Pre-install (Windows)
+        if: runner.os == 'Windows' && inputs.pre-install-windows != ''
+        shell: pwsh
+        run: ${{ inputs.pre-install-windows }}
+
+      - name: Install dependencies
+        run: ${{ inputs.install-command }}
+
+      - name: Run unit tests
+        if: inputs.unit-command != '' && runner.os != 'Windows'
+        run: ${{ inputs.unit-command }}
+
+      - name: Run integration tests
+        if: inputs.integration-command != '' && runner.os != 'Windows'
+        run: ${{ inputs.integration-command }}
+
+      - name: Run e2e tests
+        if: inputs.e2e-command != ''
+        run: ${{ inputs.e2e-command }}
+
+      - name: Check coverage threshold
+        if: inputs.coverage-command != '' && runner.os != 'Windows'
+        run: ${{ inputs.coverage-command }}
