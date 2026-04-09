@@ -23,6 +23,17 @@ repos:
     hooks:
       - id: mypy
 
+  # Baseline check: consumer layout matches python-project-standards (Tier A/B).
+  # Requires scripts/verify-standards.sh from this template bundle (same file as upstream scripts/verify-standards.sh).
+  - repo: local
+    hooks:
+      - id: verify-python-project-standards
+        name: Verify python-project-standards baseline
+        entry: bash scripts/verify-standards.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+
   # Example local hook for project-specific checks.
   # Keep local hooks minimal and documented.
   - repo: local

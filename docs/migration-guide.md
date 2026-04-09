@@ -24,6 +24,7 @@ Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](
 ## 1. Copy baseline files
 
 - Copy `templates/pre-commit/.pre-commit-config.yaml` to repository root.
+- Copy `templates/scripts/verify-standards.sh` to `scripts/verify-standards.sh` and `chmod +x` it (the template pre-commit includes **`verify-python-project-standards`**, which runs this script).
 - Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` (or call the central reusable workflows; see [reusable-workflows.md](reusable-workflows.md)).
 - Merge relevant sections from `templates/pyproject/pyproject.toml`.
 - Copy needed `.mdc` files into `.cursor/rules/`.
@@ -35,6 +36,8 @@ pip install -e ".[dev]"
 pre-commit install
 pre-commit run --all-files
 ```
+
+The **`verify-python-project-standards`** hook checks Tier **A** (local `pre-commit run` in CI) and **B** (workflows referencing org `python-project-standards` reusables), ruff/mypy in pre-commit (remote mirrors **or** local `language: system` hooks), and `STANDARDS_VERSION` vs `@v…` pins when workflows use this org’s reusables. Set **`VERIFY_STANDARDS_SKIP_PIN_CHECK=1`** if you legitimately pin callables to a **SHA** instead of `@vX.Y.Z`.
 
 ## 3. Add project-specific overrides
 

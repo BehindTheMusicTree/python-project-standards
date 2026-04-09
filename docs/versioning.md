@@ -65,6 +65,8 @@ Do this from a clean working tree on **`main`** (or your default branch).
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
 
+**Template sync:** After changing **`scripts/verify-standards.sh`**, copy it to **`templates/scripts/verify-standards.sh`** before tagging so the template bundle matches the canonical script.
+
 ## History
 
 - **Git** keeps full commit history; **tags** are immutable pointers to released commits.  

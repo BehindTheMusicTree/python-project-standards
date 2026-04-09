@@ -6,6 +6,14 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **Pre-commit**: Template includes **`verify-python-project-standards`** running `scripts/verify-standards.sh`; **`templates/scripts/verify-standards.sh`** ships the same script for copy-into-consumer. Verifier supports Tier **A/B**, local or remote ruff/mypy hooks, `pytest.ini` or `[tool.pytest.ini_options]`, optional **`STANDARDS_VERSION`** vs `@v…` pin check (`VERIFY_STANDARDS_SKIP_PIN_CHECK=1` for SHA-only pins).
+
+### Documentation
+
+- README / migration guide: copy `verify-standards.sh` with the pre-commit template; release checklist note to keep template script in sync.
+
 ## [1.0.0] - 2026-04-09
 
 ### Added

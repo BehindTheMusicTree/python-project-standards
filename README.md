@@ -34,7 +34,8 @@ This repository provides a shared baseline for Python projects so teams can:
 ## Repository Layout
 
 - `templates/pyproject/`: baseline `pyproject.toml` sections and examples.
-- `templates/pre-commit/`: baseline `.pre-commit-config.yaml`.
+- `templates/pre-commit/`: baseline `.pre-commit-config.yaml` (includes **`verify-python-project-standards`** hook).
+- `templates/scripts/`: `verify-standards.sh` — copy into consumer `scripts/` next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (central lint/test matrix) for repos that reference this repository instead of duplicating YAML.
 - `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files.
@@ -63,7 +64,9 @@ cp templates/github-workflows/lint.yml /path/to/repo/.github/workflows/lint.yml
 cp templates/pyproject/pyproject.toml /path/to/repo/pyproject.toml
 ```
 
-Then adjust package metadata and local exceptions.
+Then copy **`templates/scripts/verify-standards.sh`** to **`scripts/verify-standards.sh`** in the consumer repo (the pre-commit template runs it). Adjust package metadata and local exceptions.
+
+When publishing updates to this script, keep **`scripts/verify-standards.sh`** and **`templates/scripts/verify-standards.sh`** identical (or regenerate the template copy from the canonical script).
 
 ## Adoption tiers
 
