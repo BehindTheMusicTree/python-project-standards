@@ -45,6 +45,10 @@ on:
         required: false
         type: string
         default: ""
+      coverage-fail-under:
+        required: false
+        type: string
+        default: ""
       fail-fast:
         required: false
         type: boolean
@@ -110,3 +114,7 @@ jobs:
       - name: Check coverage threshold
         if: inputs.coverage-command != '' && runner.os != 'Windows'
         run: ${{ inputs.coverage-command }}
+
+      - name: Check coverage threshold (fail-under)
+        if: inputs.coverage-command == '' && inputs.coverage-fail-under != '' && runner.os != 'Windows'
+        run: coverage report --fail-under=${{ inputs.coverage-fail-under }}

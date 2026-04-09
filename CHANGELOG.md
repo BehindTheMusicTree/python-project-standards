@@ -6,6 +6,16 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-04-10
+
+### Added
+
+- **`reusable-test-matrix.yml`**: optional **`coverage-fail-under`** string input. When **`coverage-command`** is empty and **`coverage-fail-under`** is set (e.g. `"85"`), the coverage step runs **`coverage report --fail-under=<value>`**. Non-empty **`coverage-command`** still runs the custom command and ignores **`coverage-fail-under`** for that step. Documented in [docs/reusable-workflows.md](docs/reusable-workflows.md).
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, and **`templates/github-workflows/lint.yml`** use **`@v2.2.0`**; [`STANDARDS_VERSION`](STANDARDS_VERSION) is **`2.2.0`**.
+
 ## [2.1.0] - 2026-04-09
 
 ### Changed
