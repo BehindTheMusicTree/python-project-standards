@@ -1,5 +1,4 @@
-# Copy-paste starter. For cross-repo CI without duplicating YAML, prefer calling
-# reusable-test-matrix.yml from docs/reusable-workflows.md instead.
+# Copy-paste starter. Extend with strategy.matrix, coverage, or service containers as needed.
 name: Test
 
 on:

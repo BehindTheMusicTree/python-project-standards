@@ -14,7 +14,7 @@ This document is the **entry point** for cross-repository Python standards maint
 - **Repository overview** — purpose, adoption tiers (library vs service/API), quick start: [README](../README.md).
 - **Adopting the baseline in an existing repo** — templates vs callable workflows, copying files, `STANDARDS_VERSION`: [migration-guide.md](migration-guide.md).
 - **Versioning and releases** — SemVer tags, pinning `@v…` vs SHA, consumer bumps: [versioning.md](versioning.md).
-- **Reusable GitHub Actions** — `reusable-pre-commit.yml`, `reusable-test-matrix.yml`, inputs and examples: [reusable-workflows.md](reusable-workflows.md).
+- **Reusable GitHub Actions** — `reusable-pre-commit.yml`, inputs and examples: [reusable-workflows.md](reusable-workflows.md).
 
 ## Python style (shared)
 

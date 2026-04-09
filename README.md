@@ -33,7 +33,7 @@ This repository provides a shared baseline for Python projects so teams can:
 - Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
 - `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
-- CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests via **`reusable-test-matrix.yml`** caller when possible;
+- CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests live in the consumer repo (start from **`templates/github-workflows/test.yml`**);
 - Cursor rules baseline for process conventions;
 - migration and versioning guidance.
 
@@ -43,7 +43,7 @@ This repository provides a shared baseline for Python projects so teams can:
 - `templates/pre-commit/`: baseline `.pre-commit-config.yaml` (includes **`verify-python-project-standards`** hook).
 - `templates/scripts/`: `verify-standards.sh` — copy into consumer `scripts/` next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
-- `.github/workflows/reusable-*.yml`: **callable** workflows (central lint/test matrix) for repos that reference this repository instead of duplicating YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
+- `.github/workflows/reusable-*.yml`: **callable** workflows (shared pre-commit) for repos that reference this repository instead of duplicating lint YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
 - `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
 - `docs/`: **[development.md](docs/development.md)** (hub), migration guide, versioning, reusable workflows, and style notes (e.g. [`string-enums.md`](docs/string-enums.md)).
 - `scripts/`: validation helpers for standards adoption.
@@ -80,10 +80,10 @@ Not every Python repo should use the same CI shape. Use these tiers:
 
 | Tier | Typical repo | Use from this repo | Keep local |
 |------|----------------|-------------------|------------|
-| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) + [`reusable-test-matrix.yml`](.github/workflows/reusable-test-matrix.yml) via thin `.github/workflows/*.yml` callers (`uses:` … `@v…`); templates | Caller YAML only; overrides via `with:` |
+| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v2.3.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v3.0.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 
@@ -92,7 +92,8 @@ Not every Python repo should use the same CI shape. Use these tiers:
 For orgs that keep this repo as the single source of truth, consumer workflows can call:
 
 - `.github/workflows/reusable-pre-commit.yml` — checkout, install, run `pre-commit` (Tier A and Tier B).
-- `.github/workflows/reusable-test-matrix.yml` — OS × Python matrix, optional unit/integration/e2e/coverage steps, optional pytest cache, configurable `fail-fast`.
+
+There is **no** reusable test matrix; use [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) in the consumer repo and extend it as needed.
 
 See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples and the full input list.
 

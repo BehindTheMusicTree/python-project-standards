@@ -6,6 +6,17 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-04-12
+
+### Removed
+
+- **`reusable-test-matrix.yml`**: removed. **Breaking change** for consumers that called it — stay on **`@v2.3.0`** until you replace the job, or implement tests locally (see [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml)). [docs/migration-guide.md](docs/migration-guide.md) adds a short migration section.
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`3.0.0`** / **`@v3.0.0`** for **`reusable-pre-commit.yml`**.
+- **Tier A docs**: libraries delegate lint only; test CI is owned in each consumer repository.
+
 ## [2.3.0] - 2026-04-11
 
 ### Added

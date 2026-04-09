@@ -1,6 +1,6 @@
 # Reusable GitHub Actions workflows
 
-This repository publishes **callable** workflows under `.github/workflows/`. Consumer repositories run them with `jobs.<job_id>.uses` so lint and test logic stay centralized.
+This repository publishes **callable** workflows under `.github/workflows/`. Consumer repositories run them with `jobs.<job_id>.uses` so lint logic stays centralized.
 
 ## Naming: `reusable-` prefix
 
@@ -11,28 +11,29 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 - **Clarity:** In `.github/workflows/`, it is obvious which files exist only to be **`uses:`’d** by other repos (or by thin caller workflows here) versus workflows that **trigger on `push` / `pull_request`**.
 - **Discovery:** Contributors and reviewers can grep for `reusable-` when looking for callable entry points.
 
-**Alternatives** that are equally valid elsewhere: no prefix with a subfolder (e.g. `.github/workflows/callable/lint.yml`), or another consistent scheme. Pick one convention per repository and stick to it.
+**Alternatives** that are equally valid elsewhere: no prefix with a subfolder (e.g. `.github/workflows/callable/lint.yml`), or another consistent scheme. Pick one convention per repository and stick with it.
 
 **Renaming** a published reusable file is a **breaking change** for every consumer `uses:` path; treat renames like API changes (semver major or migration notes).
 
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
-- Pin the callee ref (**prefer `@v2.3.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
+- Pin the callee ref (**prefer `@v3.0.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
 
 ## Reference workflows
 
 | File | Purpose |
 |------|---------|
 | [`reusable-pre-commit.yml`](../.github/workflows/reusable-pre-commit.yml) | Checkout, install, run `pre-commit` (Tier A and Tier B). |
-| [`reusable-test-matrix.yml`](../.github/workflows/reusable-test-matrix.yml) | Matrix of OS × Python; install; optional pytest cache, `fail-fast`, unit, integration, e2e, and coverage steps. |
+
+**Tests:** this repository does **not** ship a reusable test matrix. Use [`templates/github-workflows/test.yml`](../templates/github-workflows/test.yml) as a starting point in the consumer repo and add `strategy.matrix`, coverage, or service containers locally.
 
 ## Example: pre-commit only (Tier B)
 
 ```yaml
 jobs:
   pre-commit:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.3.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.0.0
     with:
       python-version: "3.14"
       install-command: |
@@ -54,40 +55,10 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v2.3.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.0.0
 ```
 
 Override inputs only when needed (see table below).
-
-## Example: test matrix caller
-
-Create `.github/workflows/test.yml`:
-
-```yaml
-name: Test
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
-jobs:
-  tests:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-test-matrix.yml@v2.3.0
-    with:
-      os-matrix: '["ubuntu-latest", "macos-latest"]'
-      python-matrix: '["3.11", "3.12"]'
-```
-
-`os-matrix` and `python-matrix` are **JSON arrays encoded as strings** (required by `workflow_call` string inputs and `fromJson` in the reusable workflow).
-
-### Default test behavior
-
-If you only set matrices (or use defaults), the reusable workflow runs **`e2e-command`** only for tests. Its default is `pytest -q`. **`unit-command`**, **`integration-command`**, and **`coverage-command`** default to empty and their steps are skipped.
-
-**Coverage (default):** **`coverage-fail-under`** defaults to **`"80"`**. When **`coverage-command`** is empty, the reusable runs **`coverage report --fail-under=<value>`** only if it looks like pytest produced coverage data: **`unit-command`** or **`integration-command`** is non-empty, or **`e2e-command`** contains the substring **`--cov`**. That avoids running **`coverage report`** on the minimal default **`pytest -q`** matrix (no coverage). Override the threshold with **`coverage-fail-under: "85"`** (or another value); set **`coverage-fail-under: ''`** to disable the fail-under step entirely. If **`coverage-command`** is non-empty, it runs instead and the fail-under shortcut is not used.
-
-**Windows note:** steps for **unit**, **integration**, and **coverage** are skipped when `runner.os == 'Windows'`. **e2e** runs on all matrix OS values when `e2e-command` is non-empty.
 
 ## Inputs: `reusable-pre-commit.yml`
 
@@ -98,21 +69,3 @@ If you only set matrices (or use defaults), the reusable workflow runs **`e2e-co
 | `pre-install-command` | string | `""` | Optional shell command before install (skipped if empty). |
 | `install-command` | string | `pip`-based editable dev install | Multi-line install script. |
 | `pre-commit-command` | string | `pre-commit run --all-files` | Command to run after install. |
-
-## Inputs: `reusable-test-matrix.yml`
-
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `os-matrix` | string (JSON array) | `["ubuntu-latest"]` | Runner OS labels for the matrix. |
-| `python-matrix` | string (JSON array) | `["3.12"]` | Python versions for the matrix. |
-| `install-command` | string | `pip`-based editable dev install | Run after optional pre-install steps. |
-| `pre-install-ubuntu` | string | `""` | Linux-only pre-install (skipped if empty). |
-| `pre-install-macos` | string | `""` | macOS-only pre-install. |
-| `pre-install-windows` | string | `""` | Windows-only pre-install (runs with `pwsh`). |
-| `unit-command` | string | `""` | Unit test command (skipped on Windows). |
-| `integration-command` | string | `""` | Integration tests (skipped on Windows). |
-| `e2e-command` | string | `pytest -q` | Main test command; runs on all matrix OS unless set empty. |
-| `coverage-command` | string | `""` | Custom coverage step (skipped on Windows). If non-empty, runs instead of the **`coverage-fail-under`** shortcut. |
-| `coverage-fail-under` | string | `"80"` | When **`coverage-command`** is empty and the gate matches (see **Default test behavior**), run **`coverage report --fail-under=<value>`**. Use **`''`** to disable. Skipped on Windows with unit/integration/coverage. |
-| `fail-fast` | boolean | `true` | Matrix `fail-fast` (cancel other matrix jobs on first failure when `true`). |
-| `cache-pytest` | boolean | `false` | Restore/save `.pytest_cache` keyed by OS, Python, `pyproject.toml`, `requirements.txt`. |
