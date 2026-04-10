@@ -77,14 +77,18 @@ file_contains "$repo_path/.pre-commit-config.yaml" "https://github.com/pre-commi
 
 if command -v rg >/dev/null 2>&1; then
   has_remote_ruff=$(rg --quiet "https://github.com/astral-sh/ruff-pre-commit" "$repo_path/.pre-commit-config.yaml" && echo y || true)
-  has_local_ruff=$(rg --quiet "(^\\s*entry:.*\\bruff\\b|id:\\s*ruff)" "$repo_path/.pre-commit-config.yaml" && echo y || true)
+  has_local_ruff=$(
+    rg --quiet -e 'id:\s*ruff\s*(#|$)' -e 'id:\s*ruff-check\s*(#|$)' -e 'entry:.*\bruff\s+check\b' "$repo_path/.pre-commit-config.yaml" && echo y || true
+  )
 else
   has_remote_ruff=$(grep -F "https://github.com/astral-sh/ruff-pre-commit" "$repo_path/.pre-commit-config.yaml" >/dev/null 2>&1 && echo y || true)
-  has_local_ruff=$(grep -E "(^\\s*entry:.*ruff|id:[[:space:]]*ruff)" "$repo_path/.pre-commit-config.yaml" >/dev/null 2>&1 && echo y || true)
+  has_local_ruff=$(
+    grep -E '(id:[[:space:]]+ruff[[:space:]]*(#|$))|(id:[[:space:]]+ruff-check[[:space:]]*(#|$))|(entry:.*ruff[[:space:]]+check)' "$repo_path/.pre-commit-config.yaml" >/dev/null 2>&1 && echo y || true
+  )
 fi
 
 if [[ -z "${has_remote_ruff:-}" ]] && [[ -z "${has_local_ruff:-}" ]]; then
-  echo "Missing ruff in .pre-commit-config.yaml (use astral-sh/ruff-pre-commit or a local hook running ruff)."
+  echo "Missing ruff check in .pre-commit-config.yaml (use astral-sh/ruff-pre-commit or a local hook with id ruff / ruff-check or entry running ruff check)."
   snippet_fail=1
 fi
 
@@ -139,12 +143,24 @@ else
   echo "Found STANDARDS_VERSION: $(tr -d '[:space:]' <"$repo_path/STANDARDS_VERSION")"
   if [[ "${VERIFY_STANDARDS_SKIP_PIN_CHECK:-}" != "1" ]] && [[ -d "$repo_path/.github/workflows" ]]; then
     ver=$(tr -d '[:space:]' <"$repo_path/STANDARDS_VERSION")
-    if grep -r "python-project-standards" "$repo_path/.github/workflows" --include='*.yml' --include='*.yaml' >/dev/null 2>&1; then
-      ver_esc=${ver//./\\.}
-      if ! grep -rh "python-project-standards" "$repo_path/.github/workflows" --include='*.yml' --include='*.yaml' 2>/dev/null | grep -qE "@v${ver_esc}([^A-Za-z0-9_.-]|$)"; then
-        echo "Error: STANDARDS_VERSION is '${ver}' but no workflow pins python-project-standards to @v${ver}"
-        exit 1
+    ver_esc=${ver//./\\.}
+    uses_org_std=false
+    pin_ok=false
+    shopt -s nullglob
+    for wf in "$repo_path/.github/workflows"/*.yml "$repo_path/.github/workflows"/*.yaml; do
+      [[ -f "$wf" ]] || continue
+      if grep -Fq "python-project-standards" "$wf"; then
+        uses_org_std=true
       fi
+      if grep -F "python-project-standards" "$wf" | grep -qE "@v${ver_esc}([^A-Za-z0-9_.-]|$)"; then
+        pin_ok=true
+        break
+      fi
+    done
+    shopt -u nullglob
+    if [[ "$uses_org_std" == true ]] && [[ "$pin_ok" != true ]]; then
+      echo "Error: STANDARDS_VERSION is '${ver}' but no workflow pins python-project-standards to @v${ver}"
+      exit 1
     fi
   fi
 fi

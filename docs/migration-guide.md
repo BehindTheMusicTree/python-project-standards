@@ -18,7 +18,7 @@ Reusable workflows are resolved **at CI runtime** from this repository. Template
 Prefer a **release tag** or **commit SHA**, not `main`:
 
 ```yaml
-uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.0.0
+uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.0.1
 ```
 
 Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](versioning.md).
@@ -53,7 +53,7 @@ The **`verify-python-project-standards`** hook checks that CI references **`pre-
 Create a `STANDARDS_VERSION` file in the consumer repository:
 
 ```text
-3.0.0
+3.0.1
 ```
 
 ## 5. CI alignment check
@@ -67,7 +67,7 @@ With the default **`lint.yml`** template, **pre-commit runs inside** [reusable-p
 - Stay on **`@v2.3.0`** (or another **v2.x** tag) until they replace the call, or
 - Remove the `uses: …/reusable-test-matrix.yml@…` job and implement tests locally (copy [`templates/github-workflows/test.yml`](../templates/github-workflows/test.yml), add `strategy.matrix`, `pytest --cov`, etc., as needed).
 
-Pin **`reusable-pre-commit.yml`** to **`@v3.0.0`** when adopting this release; it is unrelated to the removed matrix but matches **`STANDARDS_VERSION`** for org consistency.
+Pin **`reusable-pre-commit.yml`** to a current **v3.x** tag (e.g. **`@v3.0.1`**) when adopting **v3+**; it is unrelated to the removed matrix but should match **`STANDARDS_VERSION`** for org consistency.
 
 ## 7. Tier B (API / service)
 

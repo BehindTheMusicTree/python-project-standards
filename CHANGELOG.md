@@ -6,6 +6,18 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-04-13
+
+### Fixed
+
+- **`scripts/verify-standards.sh`** (and **`templates/scripts/verify-standards.sh`**): Local ruff detection no longer matches **`id: ruff-format`** as **`ruff`**; requires **`id: ruff`**, **`id: ruff-check`**, or **`entry: … ruff check …`**.
+
+- **`STANDARDS_VERSION` pin check**: Scan **`.github/workflows/*.yml`** and **`*.yaml`** with a shell loop instead of **`grep -r … --include`** after the path (which some **`grep`** implementations treat as extra filenames). Same logic: any line mentioning **`python-project-standards`** must include a matching **`@v…`** pin when workflows reference the org.
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`3.0.1`** / **`@v3.0.1`**.
+
 ## [3.0.0] - 2026-04-12
 
 ### Removed
