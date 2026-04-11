@@ -4,11 +4,18 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+
+
+def _gh_token_from_actions() -> bool:
+    return os.environ.get("GITHUB_ACTIONS") == "true" and bool(
+        os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    )
 
 
 def _git_root() -> Path:
@@ -100,13 +107,14 @@ def main() -> None:
         print("Would run:", " ".join(cmd).replace("<tmp>", "(changelog body)"))
         return
 
-    gh_check = subprocess.run(["gh", "auth", "status"], capture_output=True)
-    if gh_check.returncode != 0:
-        print(
-            "GitHub CLI is not logged in. Run `gh auth login` and retry.",
-            file=sys.stderr,
-        )
-        sys.exit(1)
+    if not _gh_token_from_actions():
+        gh_check = subprocess.run(["gh", "auth", "status"], capture_output=True)
+        if gh_check.returncode != 0:
+            print(
+                "GitHub CLI is not logged in. Run `gh auth login` and retry.",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
     tag_check = subprocess.run(
         ["git", "rev-parse", "--verify", f"{tag}^{{commit}}"],

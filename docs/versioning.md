@@ -66,10 +66,9 @@ Do this from a clean working tree on **`main`** (or your default branch).
    - `git push origin main` and `git push origin vX.Y.Z` (or push all tags).
 
 6. **GitHub Release**  
-   - **Automated (recommended):** from the repo root, with the GitHub CLI installed and authenticated (`gh auth login`), and with **`vX.Y.Z`** already pushed to **`origin`**:  
-     `python3 scripts/publish_github_release.py`  
-     Uses **`STANDARDS_VERSION`** for **`X.Y.Z`**, reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** (excluding the header line), and runs **`gh release create`** with **`--verify-tag`**. Options: pass **`X.Y.Z`** as the first argument, **`--draft`** for a draft release, **`--dry-run`** to print notes without calling **`gh`**.  
-   - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**. Title **`vX.Y.Z`**. Description: the **`## [X.Y.Z]`** section from **`CHANGELOG.md`** (or summarize). Publish the release so adopters see release notes next to the tag.
+   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v4.1.0`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.  
+   - **Local (optional):** with **`gh`** installed and **`gh auth login`**, and **`vX.Y.Z`** already on **`origin`**: **`python3 scripts/publish_github_release.py`** (uses **`STANDARDS_VERSION`** if you omit the version). Supports **`--draft`**, **`--dry-run`**.  
+   - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**, paste the **`CHANGELOG.md`** section if you skip automation.
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
 

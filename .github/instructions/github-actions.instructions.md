@@ -7,6 +7,7 @@ applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,templates/githu
 ## Callable workflows (this repository)
 
 - Files under **`.github/workflows/`** that define **`on: workflow_call`** are **reusable entry points**. This repo uses the **`reusable-` filename prefix** as an org convention for discoverability (see `docs/reusable-workflows.md`). Renaming a published reusable file is a **breaking change** for every consumer `uses:` path.
+- **`release-on-tag.yml`** is **not** callable: it runs on **`push`** of SemVer tags and publishes a GitHub Release via **`scripts/publish_github_release.py`**. It needs **`permissions: contents: write`**; keep the tag glob aligned with **`docs/versioning.md`**.
 - **`reusable-pre-commit.yml`** should remain a thin, predictable pipeline: checkout → setup Python (with pip cache) → optional pre-install → install → `pre-commit run --all-files` (or overridden command). Avoid surprising side effects in defaults; document new **`inputs`** in `docs/reusable-workflows.md` and **`CHANGELOG.md`** when behavior or contract changes.
 
 ## Template caller workflows (`templates/github-workflows/`)

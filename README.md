@@ -104,7 +104,7 @@ See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples
 
 Versions are **SemVer** (`v1.2.3` tags, `STANDARDS_VERSION` without `v`). Maintainers document changes in **`CHANGELOG.md`**, tag **`vX.Y.Z`**, and publish a **GitHub Release** with the same notes. Consumers pin callable workflows to that tag (or a commit SHA), not to `main` long term.
 
-After pushing the tag, **`python3 scripts/publish_github_release.py`** (GitHub CLI **`gh`**, authenticated) creates the release from the matching **`CHANGELOG.md`** section; see **[docs/versioning.md](docs/versioning.md)** for options and the full release checklist.
+Pushing a SemVer tag like **`v4.1.0`** triggers [`.github/workflows/release-on-tag.yml`](.github/workflows/release-on-tag.yml), which publishes the GitHub Release from the matching **`CHANGELOG.md`** section. You can still run **`python3 scripts/publish_github_release.py`** locally (see **[docs/versioning.md](docs/versioning.md)**).
 
 ## Status
 

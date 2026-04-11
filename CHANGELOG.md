@@ -9,6 +9,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 ### Added
 
 - **`scripts/publish_github_release.py`**: create a GitHub Release from the matching **`CHANGELOG.md`** section via **`gh release create`** (see **`docs/versioning.md`**).
+- **`.github/workflows/release-on-tag.yml`**: on SemVer tag push, run that script with **`GITHUB_TOKEN`** so releases do not depend on a maintainer laptop.
 
 ## [4.0.0] - 2026-04-11
 
