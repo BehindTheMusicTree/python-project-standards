@@ -1,0 +1,2 @@
+# SHA-256 of vendored baseline files (paths relative to repository root).
+71c24b74adf5c42c19f4376020e953a96bf6cead464f71f2792aa2d52f644a75  baselines/ruff.toml

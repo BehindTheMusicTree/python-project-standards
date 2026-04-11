@@ -35,11 +35,11 @@ Rare code uses `type(x) is str` instead of `isinstance(x, str)`. Enum members ar
 
 ## Enforcement
 
-**Prefer lint (Ruff).** Ruff **[UP042](https://docs.astral.sh/ruff/rules/replace-str-enum/)** (`replace-str-enum`, pyupgrade) reports `class Foo(str, Enum)` (and the `enum.Enum` + `str` ordering) and can suggest migrating to **`StrEnum`**. It is active whenever **`UP`** appears in **[`tool.ruff.lint` `select`](https://docs.astral.sh/ruff/settings/#lint_select)** and your **`target-version`** is **3.11+**. The org **`templates/pyproject/pyproject.toml`** baseline already includes **`UP`** in `select`, so **`pre-commit`** / CI running **`ruff check`** is the normal enforcement path.
+**Prefer lint (Ruff).** Ruff **[UP042](https://docs.astral.sh/ruff/rules/replace-str-enum/)** (`replace-str-enum`, pyupgrade) reports `class Foo(str, Enum)` (and the `enum.Enum` + `str` ordering) and can suggest migrating to **`StrEnum`**. It is active whenever **`UP`** appears in **`[lint] select`** (in the org **`templates/baselines/ruff.toml`**, consumed via **`[tool.ruff] extend = "baselines/ruff.toml"`**) and your **`target-version`** is **3.11+**. The org baseline already includes **`UP`** in **`select`**, so **`pre-commit`** / CI running **`ruff check`** is the normal enforcement path.
 
 **Optional extras:**
 
 - A **duplicate** pre-commit hook or small AST script (fail on `(str, Enum)` bases) if you want belt-and-suspenders or stricter failure modes than Ruff alone — keep it aligned with this doc if you keep it.
 - **Cursor** / contributor **`.mdc`** rules that point here for editor and agent behavior.
 
-If you **disable** `UP042` explicitly or drop **`UP`** from `select`, you are opting out of lint enforcement; document that choice in the consumer repo.
+If you **disable** `UP042` explicitly or drop **`UP`** from **`select`** in **`baselines/ruff.toml`**, you are opting out of lint enforcement; document that choice in the consumer repo (and refresh **`DIGESTS`** if you intentionally change the vendored baseline file).

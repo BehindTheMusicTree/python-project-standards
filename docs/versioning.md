@@ -73,7 +73,9 @@ Do this from a clean working tree on **`main`** (or your default branch).
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
 
-**Template sync:** After changing **`scripts/verify-standards.sh`**, copy it to **`templates/scripts/verify-standards.sh`** before tagging so the template bundle matches the canonical script.
+**Template sync:** After changing **`scripts/verify-standards.sh`**, copy it to **`templates/scripts/verify-standards.sh`** before tagging so the template bundle matches the canonical script. Do the same for **`scripts/check_lint_baseline.py`** → **`templates/scripts/check_lint_baseline.py`**.
+
+**Lint baselines:** If you change **`templates/baselines/ruff.toml`**, recompute the SHA-256 of that file and update the **`baselines/ruff.toml`** line in **`templates/baselines/DIGESTS`** (same path layout consumers use under **`baselines/`**). If org Mypy defaults change, update **`templates/baselines/expected-mypy.json`** and the **`[tool.mypy]`** section in **`templates/pyproject/pyproject.toml`** together so **`check_lint_baseline.py`** stays consistent.
 
 ## History
 

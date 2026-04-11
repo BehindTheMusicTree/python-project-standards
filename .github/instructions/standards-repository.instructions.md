@@ -23,7 +23,7 @@ For **this** repository it exits **0** early with a message that verification is
 
 ## Policy pointers for Python-related feedback
 
-When reviews touch **documented** Python style or tooling expectations, align with **`docs/string-enums.md`** (`StrEnum`, not `(str, Enum)`) and the baseline **`templates/pyproject/pyproject.toml`** (ruff `select` includes **`UP`**, strict mypy, pytest-cov in dev extras). Prefer **pinned** tool versions in templates and pre-commit **`rev:`** fields.
+When reviews touch **documented** Python style or tooling expectations, align with **`docs/string-enums.md`** (`StrEnum`, not `(str, Enum)`) and the baselines (**`templates/baselines/ruff.toml`** includes **`UP`** in **`select`**; **`templates/pyproject/pyproject.toml`** for strict **`mypy`** + pytest-cov in dev extras). Prefer **pinned** tool versions in templates and pre-commit **`rev:`** fields.
 
 ## Trust these instructions first
 

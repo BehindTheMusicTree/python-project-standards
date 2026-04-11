@@ -24,7 +24,7 @@ Further style rules may be added under `docs/` over time; this page will link th
 
 ## Tooling and layout
 
-Baseline **pre-commit**, **`pyproject.toml`** tooling sections, **templates**, and optional **Cursor** rules are described in the [README](../README.md) (**Repository layout**, **What Is Standardized**, **Quick Start**). Repositories run **`scripts/verify-standards.sh`** (from templates) via the **`verify-python-project-standards`** hook where applicable.
+Baseline **pre-commit**, **`pyproject.toml`** tooling sections, vendored **`baselines/`** (Ruff rules + digest, Mypy expectation JSON), **templates**, and optional **Cursor** rules are described in the [README](../README.md) (**Repository layout**, **What Is Standardized**, **Quick Start**). Repositories run **`scripts/verify-standards.sh`** (from templates) via the **`verify-python-project-standards`** hook where applicable; that script invokes **`scripts/check_lint_baseline.py`** unless **`VERIFY_STANDARDS_SKIP_LINT_BASELINE=1`** (see [migration-guide.md](migration-guide.md)).
 
 ## Cursor / AI assistant rules (`.cursor/rules`)
 

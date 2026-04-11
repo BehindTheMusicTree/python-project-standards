@@ -26,9 +26,10 @@ Match the tag in the consumer’s `STANDARDS_VERSION` file. See [versioning.md](
 ## 1. Copy baseline files
 
 - Copy `templates/pre-commit/.pre-commit-config.yaml` to repository root.
-- Copy `templates/scripts/verify-standards.sh` to `scripts/verify-standards.sh` and `chmod +x` it (the template pre-commit includes **`verify-python-project-standards`**, which runs this script).
+- Copy `templates/scripts/verify-standards.sh` and **`templates/scripts/check_lint_baseline.py`** to **`scripts/`** and `chmod +x` **`scripts/verify-standards.sh`** (the template pre-commit includes **`verify-python-project-standards`**, which runs **`verify-standards.sh`**; that script runs the Python checker unless skipped).
+- Copy **`templates/baselines/`** to **`baselines/`** at the repository root (`ruff.toml`, **`DIGESTS`**, **`expected-mypy.json`**). Ruff’s shared **`select`** / **`ignore`** / line length live only in **`baselines/ruff.toml`**; **`pyproject.toml`** must keep **`[tool.ruff] extend = "baselines/ruff.toml"`** exactly.
 - Copy `templates/github-workflows/lint.yml` to `.github/workflows/lint.yml` — it **delegates** to [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) (`uses:` … `@v…`; bump the tag with `STANDARDS_VERSION`). For tests, copy [`templates/github-workflows/test.yml`](../templates/github-workflows/test.yml) to `.github/workflows/test.yml` and extend it (matrix, coverage, services) in the consumer repo; there is no org reusable test workflow (see [reusable-workflows.md](reusable-workflows.md)).
-- Merge relevant sections from `templates/pyproject/pyproject.toml`.
+- Merge relevant sections from `templates/pyproject/pyproject.toml` (metadata, dependencies, **`[tool.mypy]`**, pytest); do not move org Ruff rule settings into **`pyproject.toml`** except the thin **`[tool.ruff]`** overlay described below.
 - Copy needed **`templates/cursor-rules/*.mdc`** files into **`.cursor/rules/`** (org baselines are optional copies; merge with repo-specific rules). Include **`strenum-string-enums.mdc`** if you enforce [string enums](string-enums.md).
 
 ## 2. Install and validate
@@ -39,13 +40,13 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-The **`verify-python-project-standards`** hook checks that CI references **`pre-commit run`** and/or org **`python-project-standards`** reusables (delegated **Tier A** `lint.yml` satisfies the latter), ruff/mypy in pre-commit (remote mirrors **or** local `language: system` hooks), and `STANDARDS_VERSION` vs `@v…` pins when workflows use this org’s reusables. Set **`VERIFY_STANDARDS_SKIP_PIN_CHECK=1`** if you legitimately pin callables to a **SHA** instead of `@vX.Y.Z`.
+The **`verify-python-project-standards`** hook checks that CI references **`pre-commit run`** and/or org **`python-project-standards`** reusables (delegated **Tier A** `lint.yml` satisfies the latter), ruff/mypy in pre-commit (remote mirrors **or** local `language: system` hooks), **`STANDARDS_VERSION`** vs **`@v…`** pins when workflows use this org’s reusables, and (unless skipped) **lint baseline integrity**: **`baselines/ruff.toml`** matches **`baselines/DIGESTS`**, **`[tool.ruff]`** in **`pyproject.toml`** is only the allowed overlay on top of **`extend = "baselines/ruff.toml"`**, and **`[tool.mypy]`** matches **`baselines/expected-mypy.json`** aside from optional **`[[tool.mypy.overrides]]`**. Set **`VERIFY_STANDARDS_SKIP_PIN_CHECK=1`** if you legitimately pin callables to a **SHA** instead of **`@vX.Y.Z`**. Set **`VERIFY_STANDARDS_SKIP_LINT_BASELINE=1`** only as a temporary escape hatch (for example while rebasing a large standards bump); it disables the digest and overlay checks.
 
 ## 3. Add project-specific overrides
 
 - Follow shared Python style notes in this repo’s `docs/` where applicable (e.g. [string enumerations (`StrEnum`)](string-enums.md)).
-- Add `ruff` per-file ignores only when needed.
-- Add `mypy` overrides for tests only when needed.
+- **Ruff:** In **`pyproject.toml`**, only **`exclude`**, **`extend-exclude`**, and **`[tool.ruff.lint]`** keys **`per-file-ignores`** / **`extend-per-file-ignores`** may be added on top of **`extend`**. Do **not** set **`lint.select`**, **`lint.ignore`**, **`line-length`**, or **`[tool.ruff.format]`** in **`pyproject.toml`**—Ruff would override the extended baseline and **`check_lint_baseline.py`** will fail. Change shared rules by updating **`baselines/ruff.toml`** from a new template release and refreshing **`DIGESTS`**.
+- **Mypy:** Match every key in **`baselines/expected-mypy.json`** in **`[tool.mypy]`**; add **`[[tool.mypy.overrides]]`** only when needed (for example tests).
 - Add local hooks for custom checks only when needed.
 
 ## 4. Track adopted version

@@ -22,7 +22,7 @@ This repository provides a shared baseline for Python projects so teams can:
 - keep lint, format, and type checks consistent across repositories;
 - reduce CI/local drift;
 - document process expectations in one place;
-- allow project-specific exceptions without forking standards.
+- allow project-specific **ignores** (Ruff per-file, Mypy overrides) without forking the shared rule baseline.
 
 ## Development documentation
 
@@ -31,7 +31,7 @@ This repository provides a shared baseline for Python projects so teams can:
 ## What Is Standardized
 
 - Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
-- `pyproject.toml` tooling sections (`ruff`, `mypy`, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
+- `pyproject.toml` tooling sections (`ruff` via **`baselines/ruff.toml`** + thin overlay, strict **`mypy`** keys vs **`baselines/expected-mypy.json`**, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
 - CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests live in the consumer repo (start from **`templates/github-workflows/test.yml`**);
 - Cursor rules baseline for process conventions;
@@ -40,8 +40,9 @@ This repository provides a shared baseline for Python projects so teams can:
 ## Repository Layout
 
 - `templates/pyproject/`: baseline `pyproject.toml` sections and examples.
+- `templates/baselines/`: vendored **`ruff.toml`**, **`DIGESTS`**, **`expected-mypy.json`** — copy into consumer **`baselines/`** (digest-checked by **`scripts/check_lint_baseline.py`**).
 - `templates/pre-commit/`: baseline `.pre-commit-config.yaml` (includes **`verify-python-project-standards`** hook).
-- `templates/scripts/`: `verify-standards.sh` — copy into consumer `scripts/` next to the pre-commit hook.
+- `templates/scripts/`: `verify-standards.sh` and **`check_lint_baseline.py`** — copy into consumer **`scripts/`** next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (shared pre-commit) for repos that reference this repository instead of duplicating lint YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
 - `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
@@ -68,11 +69,13 @@ This repository provides a shared baseline for Python projects so teams can:
 cp templates/pre-commit/.pre-commit-config.yaml /path/to/repo/.pre-commit-config.yaml
 cp templates/github-workflows/lint.yml /path/to/repo/.github/workflows/lint.yml
 cp templates/pyproject/pyproject.toml /path/to/repo/pyproject.toml
+mkdir -p /path/to/repo/baselines
+cp templates/baselines/* /path/to/repo/baselines/
 ```
 
-Then copy **`templates/scripts/verify-standards.sh`** to **`scripts/verify-standards.sh`** in the consumer repo (the pre-commit template runs it). Adjust package metadata and local exceptions.
+Then copy **`templates/scripts/verify-standards.sh`** and **`templates/scripts/check_lint_baseline.py`** to **`scripts/`** in the consumer repo (the pre-commit template runs **`verify-standards.sh`**, which invokes the Python checker). Adjust package metadata; keep **`[tool.ruff] extend = "baselines/ruff.toml"`** and put rule changes only in **`baselines/ruff.toml`** when upgrading from this repo.
 
-When publishing updates to this script, keep **`scripts/verify-standards.sh`** and **`templates/scripts/verify-standards.sh`** identical (or regenerate the template copy from the canonical script).
+When publishing updates to these scripts, keep **`scripts/verify-standards.sh`** and **`templates/scripts/verify-standards.sh`** identical, and **`scripts/check_lint_baseline.py`** and **`templates/scripts/check_lint_baseline.py`** identical (or regenerate template copies from the canonical files).
 
 ## Adoption tiers
 

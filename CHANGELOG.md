@@ -6,6 +6,15 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **`templates/baselines/`**: vendored **`ruff.toml`**, **`DIGESTS`**, and **`expected-mypy.json`** for a strict shared lint/type baseline; consumer **`pyproject.toml`** uses **`[tool.ruff] extend = "baselines/ruff.toml"`** with an allowlisted overlay only.
+- **`scripts/check_lint_baseline.py`** (mirrored under **`templates/scripts/`**): verifies digest, Ruff overlay keys, and Mypy keys vs **`baselines/expected-mypy.json`** (optional **`[[tool.mypy.overrides]]`** only).
+
+### Changed
+
+- **`scripts/verify-standards.sh`** (and template copy): after layout checks, runs **`python3 scripts/check_lint_baseline.py`** unless **`VERIFY_STANDARDS_SKIP_LINT_BASELINE=1`**. Adopters must copy **`baselines/`**, **`check_lint_baseline.py`**, and the updated **`pyproject.toml`** / **`verify-standards.sh`** from templates (see **`docs/migration-guide.md`**).
+
 ## [3.1.0] - 2026-04-11
 
 ### Added
