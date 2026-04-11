@@ -6,6 +6,16 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-04-11
+
+### Added
+
+- **GitHub Copilot**: Path-specific repository instructions under **`.github/instructions/*.instructions.md`** (`applyTo` frontmatter) for Copilot code review and cloud agent context (repository overview, Actions, templates, documentation, shell scripts).
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`3.1.0`** / **`@v3.1.0`**.
+
 ## [3.0.1] - 2026-04-13
 
 ### Fixed
