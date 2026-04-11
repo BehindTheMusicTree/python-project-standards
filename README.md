@@ -86,7 +86,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 | **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.0.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.1.0`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 

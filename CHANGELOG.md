@@ -6,10 +6,16 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-04-11
+
 ### Added
 
 - **`scripts/publish_github_release.py`**: create a GitHub Release from the matching **`CHANGELOG.md`** section via **`gh release create`** (see **`docs/versioning.md`**).
 - **`.github/workflows/release-on-tag.yml`**: on SemVer tag push, run that script with **`GITHUB_TOKEN`** so releases do not depend on a maintainer laptop.
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`4.1.0`** / **`@v4.1.0`**.
 
 ## [4.0.0] - 2026-04-11
 
