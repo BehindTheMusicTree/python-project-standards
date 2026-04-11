@@ -18,7 +18,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ## Requirements
 
 - The consumer repo must be allowed to use workflows from this repository (typically same GitHub organization and org settings that permit reusable workflows).
-- Pin the callee ref (**prefer `@v3.1.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
+- Pin the callee ref (**prefer `@v4.0.0` or a commit SHA**). Avoid `@main` in production CI so standards updates do not surprise you.
 
 ## Reference workflows
 
@@ -33,7 +33,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 ```yaml
 jobs:
   pre-commit:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.1.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v4.0.0
     with:
       python-version: "3.14"
       install-command: |
@@ -55,7 +55,7 @@ on:
 
 jobs:
   lint:
-    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v3.1.0
+    uses: YOUR_ORG/python-project-standards/.github/workflows/reusable-pre-commit.yml@v4.0.0
 ```
 
 Override inputs only when needed (see table below).
