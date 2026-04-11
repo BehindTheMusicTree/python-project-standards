@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+
+# Dependency Pinning
+
+Always pin exact versions for Python and tooling dependencies.
+
+Python examples:
+
+- Good: `ruff==0.15.9`
+- Bad: `ruff>=0.15.9`
+
+Principles:
+
+1. No `latest`, no ranges by default.
+2. Update versions intentionally.
+3. Keep CI and local installs aligned.
