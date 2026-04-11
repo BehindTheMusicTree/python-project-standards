@@ -66,10 +66,10 @@ Do this from a clean working tree on **`main`** (or your default branch).
    - `git push origin main` and `git push origin vX.Y.Z` (or push all tags).
 
 6. **GitHub Release**  
-   - On GitHub: **Releases → Draft a new release → Choose tag `vX.Y.Z`**.  
-   - Title: **`vX.Y.Z`**.  
-   - Description: copy the **`## [X.Y.Z]`** section from `CHANGELOG.md` (or summarize).  
-   - Publish the release so adopters see release notes next to the tag.
+   - **Automated (recommended):** from the repo root, with the GitHub CLI installed and authenticated (`gh auth login`), and with **`vX.Y.Z`** already pushed to **`origin`**:  
+     `python3 scripts/publish_github_release.py`  
+     Uses **`STANDARDS_VERSION`** for **`X.Y.Z`**, reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** (excluding the header line), and runs **`gh release create`** with **`--verify-tag`**. Options: pass **`X.Y.Z`** as the first argument, **`--draft`** for a draft release, **`--dry-run`** to print notes without calling **`gh`**.  
+   - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**. Title **`vX.Y.Z`**. Description: the **`## [X.Y.Z]`** section from **`CHANGELOG.md`** (or summarize). Publish the release so adopters see release notes next to the tag.
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
 

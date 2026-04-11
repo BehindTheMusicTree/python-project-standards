@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **`scripts/publish_github_release.py`**: create a GitHub Release from the matching **`CHANGELOG.md`** section via **`gh release create`** (see **`docs/versioning.md`**).
+
 ## [4.0.0] - 2026-04-11
 
 ### Added
