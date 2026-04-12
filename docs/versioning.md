@@ -58,7 +58,7 @@ Do this from a clean working tree on **`main`** (or your default branch).
 
 4. **GitHub Release** — Same as step 6 below (tag push triggers **`release-on-tag.yml`** when applicable).
 
-**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. **`.bumpversion.toml`** sets **`allow_dirty = true`** so you can run the bump while other files are modified; keep release commits focused anyway.
+**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. **`.bumpversion.toml`** sets **`allow_dirty = false`**: commit or stash unrelated changes before **`standards_release_bump.sh`**, or pass **`--allow-dirty`** through to **`bump-my-version bump`** only when you intentionally need an exception.
 
 ### Manual checklist
 

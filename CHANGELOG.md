@@ -16,6 +16,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - **`scripts/verify-standards.sh`** (and **`templates/scripts/verify-standards.sh`**): skip consumer verification when **`templates/pyproject/pyproject.toml`** exists and there is **no** root **`baselines/ruff.toml`**, so a future root **`pyproject.toml`** (for example maintainer tooling) does not require a consumer **`baselines/`** tree.
 
+- **`.bumpversion.toml`**: set **`allow_dirty = false`** so **`bump-my-version`** refuses a dirty Git tree unless **`--allow-dirty`** is passed explicitly (see **`docs/versioning.md`**).
+
 ## [4.1.1] - 2026-04-12
 
 ### Fixed
