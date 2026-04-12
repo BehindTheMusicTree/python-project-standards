@@ -45,9 +45,9 @@ This repository provides a shared baseline for Python projects so teams can:
 - `templates/scripts/`: `verify-standards.sh` and **`check_lint_baseline.py`** — copy into consumer **`scripts/`** next to the pre-commit hook.
 - `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (shared pre-commit) for repos that reference this repository instead of duplicating lint YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
-- `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
+- `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **changelog alignment**, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
 - `docs/`: **[development.md](docs/development.md)** (hub), migration guide, versioning, reusable workflows, and style notes (e.g. [`string-enums.md`](docs/string-enums.md)).
-- `scripts/`: validation helpers for standards adoption.
+- `scripts/`: validation helpers for standards adoption; **`standards_release_bump.sh`** + **`finalize_standards_changelog.py`** automate SemVer bumps (see [docs/versioning.md](docs/versioning.md)). **`.bumpversion.toml`** configures **`bump-my-version`** for **`STANDARDS_VERSION`** and example **`@v…`** pins (not **`CHANGELOG.md`**).
 
 ## Usage Model
 

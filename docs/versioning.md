@@ -48,12 +48,26 @@ Each GitHub Release (and matching `CHANGELOG.md` section) should make adoption s
 
 Do this from a clean working tree on **`main`** (or your default branch).
 
+### Automated bump (recommended)
+
+1. **Changelog draft** — Add release notes under **`## [Unreleased]`** in **`CHANGELOG.md`**.
+
+2. **Bump** — From the repository root, run **`bash scripts/standards_release_bump.sh patch`** (or **`minor`** / **`major`**). This runs **`bump-my-version`** using **`.bumpversion.toml`**, updating **`STANDARDS_VERSION`**, **`current_version`** in that config, and every listed **`@v…`** / example pin file **except** **`CHANGELOG.md`**. The script then runs **`scripts/finalize_standards_changelog.py`**, which reads the new version from **`STANDARDS_VERSION`** and moves the **`[Unreleased]`** body into **`## [X.Y.Z] - YYYY-MM-DD`** (today’s date by default). Set **`CHANGELOG_DATE=YYYY-MM-DD`** to override the date, or **`CHANGELOG_ALLOW_EMPTY=1`** to allow an empty **`[Unreleased]`** body. Extra arguments are forwarded only to **`bump-my-version bump`** (for example **`--dry-run`**).
+
+3. **Commit / tag / push** — Follow steps 3–5 in the manual checklist below.
+
+4. **GitHub Release** — Same as step 6 below (tag push triggers **`release-on-tag.yml`** when applicable).
+
+**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. **`.bumpversion.toml`** sets **`allow_dirty = true`** so you can run the bump while other files are modified; keep release commits focused anyway.
+
+### Manual checklist
+
 1. **Changelog**  
    - Move items from `## [Unreleased]` into a new `## [X.Y.Z] - YYYY-MM-DD` section (or fold into the version you are cutting).  
    - Leave `## [Unreleased]` empty or remove subsection bullets until the next change.
 
 2. **Version file**  
-   - Set root **`STANDARDS_VERSION`** to **`X.Y.Z`** (no `v`).
+   - Set root **`STANDARDS_VERSION`** to **`X.Y.Z`** (no `v`), and keep **`.bumpversion.toml`** **`current_version`** in sync if you use the automated bump config.
 
 3. **Commit**  
    - One commit for the release prep, for example: `chore(release): v2.0.0`.

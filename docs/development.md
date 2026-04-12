@@ -30,6 +30,6 @@ Baseline **pre-commit**, **`pyproject.toml`** tooling sections, vendored **`base
 
 **`templates/cursor-rules/*.mdc`** are **optional copies** for consumer repositories. They are not fetched automatically: each repo should **`cp`** (or merge) the baseline files it wants into **`.cursor/rules/`**, alongside **project-specific** rules (Django conventions, test layout, etc.).
 
-- **Do copy** org baselines you adopt (dependency pinning, `StrEnum`, commit messages, etc.) so editors and agents match the same policy as CI.
+- **Do copy** org baselines you adopt (dependency pinning, `StrEnum`, commit messages, changelog alignment for agents, etc.) so editors and agents match the same policy as CI.
 - **Do not** treat the template directory as a submodule; **re-copy or diff** when you bump **`STANDARDS_VERSION`** so local rules stay aligned.
 - **python-project-standards** keeps **`.cursor/rules/`** in lockstep with **`templates/cursor-rules/*.mdc`** (same rules for maintainers; templates use absolute GitHub links where useful for copy-paste consumers, while **`.cursor/rules/strenum-string-enums.mdc`** points at **`docs/`** with repo-relative paths). String enums policy is also in **[string-enums.md](string-enums.md)**.

@@ -6,6 +6,16 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **Release automation**: **`.bumpversion.toml`** for **`bump-my-version==1.3.0`** (typically **`uv run --with bump-my-version==1.3.0 …`**); **`scripts/standards_release_bump.sh`** bumps **`STANDARDS_VERSION`** and org example **`@v…`** pins, then **`scripts/finalize_standards_changelog.py`** folds **`CHANGELOG.md` `## [Unreleased]`** into **`## [X.Y.Z] - YYYY-MM-DD`** using the post-bump version (see **`docs/versioning.md`**).
+
+- **Cursor**: **`changelog-alignment.mdc`** in **`.cursor/rules/`** and **`templates/cursor-rules/`** (`alwaysApply`) requires updating **`CHANGELOG.md` `## [Unreleased]`** alongside substantive repo changes (with narrow exemptions), including a reminder to update consumer changelogs when aligning downstream repos. **[README](README.md)** lists the rule in the Cursor template bundle.
+
+### Changed
+
+- **`scripts/verify-standards.sh`** (and **`templates/scripts/verify-standards.sh`**): skip consumer verification when **`templates/pyproject/pyproject.toml`** exists and there is **no** root **`baselines/ruff.toml`**, so a future root **`pyproject.toml`** (for example maintainer tooling) does not require a consumer **`baselines/`** tree.
+
 ## [4.1.1] - 2026-04-12
 
 ### Fixed
