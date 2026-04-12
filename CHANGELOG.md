@@ -6,6 +6,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [4.3.1] - 2026-04-12
+
 ### Changed
 
 - **`scripts/standards_release_bump.sh`**: optional **`BUMP_MY_VERSION_PYTHON`** for **`uv run --python`** when **`uv`** is used; **[`docs/versioning.md`](docs/versioning.md)** documents macOS **`bump-my-version`** segfault / CoreFoundation fork troubleshooting.

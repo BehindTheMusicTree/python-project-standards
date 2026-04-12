@@ -12,7 +12,7 @@ applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,templates/githu
 
 ## Template caller workflows (`templates/github-workflows/`)
 
-- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref** (example in tree: `@v4.3.0`). When updating the example pin, consider whether **`STANDARDS_VERSION`**, **`CHANGELOG.md`**, and docs examples need the same bump for consistency.
+- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref** (example in tree: `@v4.3.1`). When updating the example pin, consider whether **`STANDARDS_VERSION`**, **`CHANGELOG.md`**, and docs examples need the same bump for consistency.
 - **`test.yml`** is a **starter only** for consumer repos. This standards repo does **not** ship a reusable test matrix. Reviews should resist moving project-specific test logic here unless the README and docs explicitly expand that scope.
 
 ## Review checklist
