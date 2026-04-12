@@ -50,15 +50,15 @@ Do this from a clean working tree on **`main`** (or your default branch).
 
 ### Automated bump (recommended)
 
-1. **Changelog draft** — Add release notes under **`## [Unreleased]`** in **`CHANGELOG.md`**.
+1. **Changelog draft** — Add release notes under **`## [Unreleased]`** in **`CHANGELOG.md`**, then **`git commit`** that draft (only the prep you want on **`main`**). **`scripts/standards_release_bump.sh`** refuses to start unless the working tree is **clean**, so **`bump-my-version`** can keep **`allow_dirty = false`** without toggling config.
 
-2. **Bump** — From the repository root, run **`bash scripts/standards_release_bump.sh patch`** (or **`minor`** / **`major`**). This runs **`bump-my-version`** using **`.bumpversion.toml`**, updating **`STANDARDS_VERSION`**, **`current_version`** in that config, and every listed **`@v…`** / example pin file **except** **`CHANGELOG.md`**. The script then runs **`scripts/finalize_standards_changelog.py`**, which reads the new version from **`STANDARDS_VERSION`** and moves the **`[Unreleased]`** body into **`## [X.Y.Z] - YYYY-MM-DD`** (today’s date by default). Set **`CHANGELOG_DATE=YYYY-MM-DD`** to override the date, or **`CHANGELOG_ALLOW_EMPTY=1`** to allow an empty **`[Unreleased]`** body. Extra arguments are forwarded only to **`bump-my-version bump`** (for example **`--dry-run`**).
+2. **Bump** — From the repository root, run **`bash scripts/standards_release_bump.sh patch`** (or **`minor`** / **`major`**). Optional **`--commit`**: after **`bump-my-version`** and **`finalize_standards_changelog.py`**, the script runs **`git add --`** on exactly the paths from **`git diff --name-only HEAD`** (release-only edits: pin files, **`CHANGELOG.md`**, etc.)—never **`git add -A`**—then **`git commit -m "chore(release): vX.Y.Z"`**. Without **`--commit`**, stage those same paths yourself (again: only **`git diff --name-only`**, not the whole tree), then commit. This runs **`bump-my-version`** using **`.bumpversion.toml`**, updating **`STANDARDS_VERSION`**, **`current_version`** in that config, and every listed **`@v…`** / example pin file **except** **`CHANGELOG.md`**. The script then runs **`scripts/finalize_standards_changelog.py`**, which reads the new version from **`STANDARDS_VERSION`** and moves the **`[Unreleased]`** body into **`## [X.Y.Z] - YYYY-MM-DD`** (today’s date by default). Set **`CHANGELOG_DATE=YYYY-MM-DD`** to override the date, or **`CHANGELOG_ALLOW_EMPTY=1`** to allow an empty **`[Unreleased]`** body. Arguments other than **`--commit`** are forwarded to **`bump-my-version bump`** (for example **`--dry-run`**); **`--commit`** is not passed through.
 
-3. **Commit / tag / push** — Follow steps 3–5 in the manual checklist below.
+3. **Tag / push** — Create the annotated tag and push **`main`** + tag (see the manual checklist below). If you used **`--commit`**, the script prints the suggested **`git tag`** / **`git push`** line after the commit.
 
 4. **GitHub Release** — Same as step 6 below (tag push triggers **`release-on-tag.yml`** when applicable).
 
-**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. **`.bumpversion.toml`** sets **`allow_dirty = false`**: commit or stash unrelated changes before **`standards_release_bump.sh`**, or pass **`--allow-dirty`** through to **`bump-my-version bump`** only when you intentionally need an exception.
+**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. If you truly must bump with unrelated local edits, pass **`--allow-dirty`** through to **`bump-my-version bump`** (advanced; not recommended).
 
 ### Manual checklist
 
