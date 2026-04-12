@@ -6,9 +6,13 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [4.3.0] - 2026-04-12
+
 ### Changed
 
 - **`scripts/verify-standards.sh`** (and **`templates/scripts/verify-standards.sh`**): reject **isort** in **`.pre-commit-config.yaml`** (**`mirrors-isort`**, **`PyCQA/isort`**, hook **`id: isort`**) with an error explaining conflict with **`ruff format`**; import sorting stays on Ruff **`I`** via **`baselines/ruff.toml`**. Escape hatch: **`VERIFY_STANDARDS_ALLOW_ISORT=1`**.
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`4.3.0`** / **`@v4.3.0`**.
 
 ## [4.2.0] - 2026-04-12
 
