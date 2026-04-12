@@ -7,6 +7,8 @@ usage() {
   echo "  Requires a clean git working tree (matches .bumpversion.toml allow_dirty = false)." >&2
   echo "  --commit  after bump + finalize, git add only files changed since HEAD, then commit chore(release): vX.Y.Z" >&2
   echo "Optional env: CHANGELOG_DATE=YYYY-MM-DD, CHANGELOG_ALLOW_EMPTY=1 (passed to finalize script)." >&2
+  echo "Optional env: BUMP_MY_VERSION_PYTHON=3.12 (or an interpreter path) — forwarded as uv run --python when using uv;" >&2
+  echo "  use if bump-my-version segfaults on macOS (often default pyenv 3.14 + native deps or uv/sandbox interaction)." >&2
 }
 
 [[ "${1:-}" == patch || "${1:-}" == minor || "${1:-}" == major ]] || {
@@ -50,8 +52,13 @@ for a in "${bump_args[@]}"; do
   fi
 done
 
+uv_python_args=()
+if [[ -n "${BUMP_MY_VERSION_PYTHON:-}" ]]; then
+  uv_python_args=(--python "$BUMP_MY_VERSION_PYTHON")
+fi
+
 if command -v uv >/dev/null 2>&1; then
-  uv run --with bump-my-version==1.3.0 bump-my-version bump "$part" "${bump_args[@]}"
+  uv run "${uv_python_args[@]}" --with bump-my-version==1.3.0 bump-my-version bump "$part" "${bump_args[@]}"
 else
   bump-my-version bump "$part" "${bump_args[@]}"
 fi
