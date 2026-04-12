@@ -10,6 +10,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - **`scripts/standards_release_bump.sh`**: optional **`BUMP_MY_VERSION_PYTHON`** for **`uv run --python`** when **`uv`** is used; **[`docs/versioning.md`](docs/versioning.md)** documents macOS **`bump-my-version`** segfault / CoreFoundation fork troubleshooting.
 
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`4.3.1`** / **`@v4.3.1`**.
+
 ## [4.3.0] - 2026-04-12
 
 ### Changed
