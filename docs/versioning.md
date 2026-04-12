@@ -80,7 +80,7 @@ Do this from a clean working tree on **`main`** (or your default branch).
    - `git push origin main` and `git push origin vX.Y.Z` (or push all tags).
 
 6. **GitHub Release**  
-   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v4.1.1`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.  
+   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v4.2.0`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.  
    - **Local (optional):** with **`gh`** installed and **`gh auth login`**, and **`vX.Y.Z`** already on **`origin`**: **`python3 scripts/publish_github_release.py`** (uses **`STANDARDS_VERSION`** if you omit the version). Supports **`--draft`**, **`--dry-run`**.  
    - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**, paste the **`CHANGELOG.md`** section if you skip automation.
 

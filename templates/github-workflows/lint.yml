@@ -8,4 +8,4 @@ on:
 
 jobs:
   lint:
-    uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v4.1.1
+    uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v4.2.0

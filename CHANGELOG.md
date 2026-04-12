@@ -6,6 +6,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [4.2.0] - 2026-04-12
+
 ### Added
 
 - **Release automation**: **`.bumpversion.toml`** for **`bump-my-version==1.3.0`** (typically **`uv run --with bump-my-version==1.3.0 …`**); **`scripts/standards_release_bump.sh`** bumps **`STANDARDS_VERSION`** and org example **`@v…`** pins, then **`scripts/finalize_standards_changelog.py`** folds **`CHANGELOG.md` `## [Unreleased]`** into **`## [X.Y.Z] - YYYY-MM-DD`** using the post-bump version (see **`docs/versioning.md`**). The script **requires a clean git tree** before **`bump-my-version`**; optional **`--commit`** stages **only** paths from **`git diff --name-only HEAD`** after bump + finalize (never **`git add -A`**), then commits **`chore(release): vX.Y.Z`**.
