@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Changed
+
+- **`scripts/verify-standards.sh`** (and **`templates/scripts/verify-standards.sh`**): reject **isort** in **`.pre-commit-config.yaml`** (**`mirrors-isort`**, **`PyCQA/isort`**, hook **`id: isort`**) with an error explaining conflict with **`ruff format`**; import sorting stays on Ruff **`I`** via **`baselines/ruff.toml`**. Escape hatch: **`VERIFY_STANDARDS_ALLOW_ISORT=1`**.
+
 ## [4.2.0] - 2026-04-12
 
 ### Added
