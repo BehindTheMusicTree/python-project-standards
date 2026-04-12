@@ -6,6 +6,16 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [4.1.1] - 2026-04-12
+
+### Fixed
+
+- **`templates/baselines/DIGESTS`**: list SHA-256 for **`baselines/expected-mypy.json`** alongside **`baselines/ruff.toml`** so **`check_lint_baseline.py`** digest verification catches Mypy baseline drift.
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`4.1.1`** / **`@v4.1.1`**.
+
 ## [4.1.0] - 2026-04-11
 
 ### Added

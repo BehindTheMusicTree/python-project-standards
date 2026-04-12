@@ -66,7 +66,7 @@ Do this from a clean working tree on **`main`** (or your default branch).
    - `git push origin main` and `git push origin vX.Y.Z` (or push all tags).
 
 6. **GitHub Release**  
-   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v4.1.0`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.  
+   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v4.1.1`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.  
    - **Local (optional):** with **`gh`** installed and **`gh auth login`**, and **`vX.Y.Z`** already on **`origin`**: **`python3 scripts/publish_github_release.py`** (uses **`STANDARDS_VERSION`** if you omit the version). Supports **`--draft`**, **`--dry-run`**.  
    - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**, paste the **`CHANGELOG.md`** section if you skip automation.
 
@@ -74,7 +74,7 @@ Do this from a clean working tree on **`main`** (or your default branch).
 
 **Template sync:** After changing **`scripts/verify-standards.sh`**, copy it to **`templates/scripts/verify-standards.sh`** before tagging so the template bundle matches the canonical script. Do the same for **`scripts/check_lint_baseline.py`** → **`templates/scripts/check_lint_baseline.py`**.
 
-**Lint baselines:** If you change **`templates/baselines/ruff.toml`**, recompute the SHA-256 of that file and update the **`baselines/ruff.toml`** line in **`templates/baselines/DIGESTS`** (same path layout consumers use under **`baselines/`**). If org Mypy defaults change, update **`templates/baselines/expected-mypy.json`** and the **`[tool.mypy]`** section in **`templates/pyproject/pyproject.toml`** together so **`check_lint_baseline.py`** stays consistent.
+**Lint baselines:** If you change **`templates/baselines/ruff.toml`** or **`templates/baselines/expected-mypy.json`**, recompute each file’s SHA-256 and update the matching line in **`templates/baselines/DIGESTS`** (paths are relative to the consumer repo root, e.g. **`baselines/ruff.toml`**). If org Mypy defaults change, update **`expected-mypy.json`** and the **`[tool.mypy]`** section in **`templates/pyproject/pyproject.toml`** together so **`check_lint_baseline.py`** stays consistent.
 
 ## History
 

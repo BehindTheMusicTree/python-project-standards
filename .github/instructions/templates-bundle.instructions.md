@@ -14,7 +14,7 @@ These files are **copied into consumer repositories**. Drift between templates a
 
 ## `templates/baselines/`
 
-- **`ruff.toml`** is the canonical org Ruff rule set; **`DIGESTS`** must list the correct SHA-256 for **`baselines/ruff.toml`** (repo-root path as copied by consumers).
+- **`ruff.toml`** is the canonical org Ruff rule set; **`DIGESTS`** must list the correct SHA-256 for every vendored baseline file (**`baselines/ruff.toml`**, **`baselines/expected-mypy.json`**) using repo-root-relative paths as copied by consumers.
 - **`expected-mypy.json`** must match the required **`[tool.mypy]`** keys in **`templates/pyproject/pyproject.toml`**.
 
 ## `templates/pyproject/pyproject.toml`
