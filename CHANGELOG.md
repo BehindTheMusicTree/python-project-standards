@@ -10,6 +10,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - **`scripts/check_lint_baseline.py`** (and **`templates/scripts/check_lint_baseline.py`**): avoid reassigning the **`for`** loop variable (**`PLW2901`**) so consumers whose baseline includes **`PL`** can run **Ruff** on this script without a per-file ignore.
 
+- **`scripts/check_lint_baseline.py`** (and **`templates/scripts/check_lint_baseline.py`**): fail if **`baselines/DIGESTS`** omits **`baselines/ruff.toml`** or **`baselines/expected-mypy.json`**, so those baselines cannot silently drop out of digest verification.
+
 ## [4.3.1] - 2026-04-12
 
 ### Changed
