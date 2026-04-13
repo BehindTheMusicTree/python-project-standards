@@ -12,6 +12,12 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - **`scripts/check_lint_baseline.py`** (and **`templates/scripts/check_lint_baseline.py`**): fail if **`baselines/DIGESTS`** omits **`baselines/ruff.toml`** or **`baselines/expected-mypy.json`**, so those baselines cannot silently drop out of digest verification.
 
+- **[`docs/migration-guide.md`](docs/migration-guide.md)**: **`verify-python-project-standards`** description notes that **`baselines/DIGESTS`** must list **`baselines/ruff.toml`** and **`baselines/expected-mypy.json`**.
+
+### Changed
+
+- **Pins**: README, [migration-guide.md](docs/migration-guide.md), [reusable-workflows.md](docs/reusable-workflows.md) examples, **`templates/github-workflows/lint.yml`**, [`.github/instructions/github-actions.instructions.md`](.github/instructions/github-actions.instructions.md), [`STANDARDS_VERSION`](STANDARDS_VERSION) → **`4.3.2`** / **`@v4.3.2`**.
+
 ## [4.3.1] - 2026-04-12
 
 ### Changed
