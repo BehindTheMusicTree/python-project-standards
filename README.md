@@ -86,7 +86,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 | **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.3.1`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.3.2`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 
@@ -104,7 +104,7 @@ See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples
 
 Versions are **SemVer** (`v1.2.3` tags, `STANDARDS_VERSION` without `v`). Maintainers document changes in **`CHANGELOG.md`**, tag **`vX.Y.Z`**, and publish a **GitHub Release** with the same notes. Consumers pin callable workflows to that tag (or a commit SHA), not to `main` long term.
 
-Pushing a SemVer tag like **`v4.3.1`** triggers [`.github/workflows/release-on-tag.yml`](.github/workflows/release-on-tag.yml), which publishes the GitHub Release from the matching **`CHANGELOG.md`** section. You can still run **`python3 scripts/publish_github_release.py`** locally (see **[docs/versioning.md](docs/versioning.md)**).
+Pushing a SemVer tag like **`v4.3.2`** triggers [`.github/workflows/release-on-tag.yml`](.github/workflows/release-on-tag.yml), which publishes the GitHub Release from the matching **`CHANGELOG.md`** section. You can still run **`python3 scripts/publish_github_release.py`** locally (see **[docs/versioning.md](docs/versioning.md)**).
 
 ## Status
 

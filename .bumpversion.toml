@@ -2,7 +2,7 @@
 # Run via scripts/standards_release_bump.sh (then finalize_changelog). Do not list CHANGELOG.md here.
 
 [tool.bumpversion]
-current_version = "4.3.1"
+current_version = "4.3.2"
 commit = false
 tag = false
 allow_dirty = false
