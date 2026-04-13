@@ -24,8 +24,8 @@ def _repo_root(argv: list[str]) -> Path:
 
 def _parse_digests(content: str) -> dict[str, str]:
     out: dict[str, str] = {}
-    for line in content.splitlines():
-        line = line.strip()
+    for raw in content.splitlines():
+        line = raw.strip()
         if not line or line.startswith("#"):
             continue
         m = re.match(r"^([a-fA-F0-9]{64})\s+(\S+)\s*$", line)

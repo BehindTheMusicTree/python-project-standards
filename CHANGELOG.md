@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Fixed
+
+- **`scripts/check_lint_baseline.py`** (and **`templates/scripts/check_lint_baseline.py`**): avoid reassigning the **`for`** loop variable (**`PLW2901`**) so consumers whose baseline includes **`PL`** can run **Ruff** on this script without a per-file ignore.
+
 ## [4.3.1] - 2026-04-12
 
 ### Changed
