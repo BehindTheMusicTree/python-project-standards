@@ -11,3 +11,8 @@ reusable_lint:
   type: bool
   default: true
   help: Add .github/workflows/lint.yml calling the org reusable pre-commit workflow
+
+test_workflow:
+  type: bool
+  default: true
+  help: Add starter .github/workflows/test.yml (false when the repo runs tests in its own workflow)

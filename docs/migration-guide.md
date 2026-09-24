@@ -36,6 +36,7 @@ Questions (`copier.yml`):
 
 - **`package_name`** — `[project] name` in the starter `pyproject.toml`.
 - **`reusable_lint`** — `true` renders `.github/workflows/lint.yml` delegating to [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml); `false` when the repo already runs pre-commit in its own workflow (e.g. Tier B services).
+- **`test_workflow`** — `true` renders a starter `.github/workflows/test.yml`; `false` when tests run in a differently named workflow (otherwise `copier update` re-creates the deleted file).
 
 `pyproject.toml` and `.github/workflows/test.yml` are **bootstrap-only** (`_skip_if_exists`): rendered for new repos, never touched in existing ones. Merge relevant sections from [`template/pyproject.toml.jinja`](../template/pyproject.toml.jinja) by hand (metadata, dependencies, **`[tool.mypy]`**, pytest). Tests stay in the consumer repo; there is no org reusable test workflow (see [reusable-workflows.md](reusable-workflows.md)).
 
@@ -79,7 +80,7 @@ v5 removes the copy-and-verify machinery. In each consumer:
 **`reusable-test-matrix.yml` was removed in v3.0.0.** Consumers that called it should either:
 
 - Stay on **`@v2.3.0`** (or another **v2.x** tag) until they replace the call, or
-- Remove the `uses: …/reusable-test-matrix.yml@…` job and implement tests locally (start from [`template/.github/workflows/test.yml`](../template/.github/workflows/test.yml), add `strategy.matrix`, `pytest --cov`, etc., as needed).
+- Remove the `uses: …/reusable-test-matrix.yml@…` job and implement tests locally (start from [`template/.github/workflows/test.yml`](../template/.github/workflows/), add `strategy.matrix`, `pytest --cov`, etc., as needed).
 
 ## 7. Tier B (API / service)
 
