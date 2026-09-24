@@ -1,5 +1,5 @@
-# Organization Ruff baseline (vendored copy per repo). Do not edit in consumer
-# repositories except by upgrading python-project-standards templates.
+# Organization Ruff baseline, managed by Copier (see .copier-answers.yml).
+# Local edits are kept and 3-way merged on `copier update`.
 # Optional per-repo ignores: use pyproject.toml [tool.ruff] overlay (see migration guide).
 
 line-length = 100
