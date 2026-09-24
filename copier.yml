@@ -1,0 +1,13 @@
+_subdirectory: template
+_skip_if_exists:
+  - pyproject.toml
+  - .github/workflows/test.yml
+
+package_name:
+  type: str
+  help: Distribution name for pyproject.toml
+
+reusable_lint:
+  type: bool
+  default: true
+  help: Add .github/workflows/lint.yml calling the org reusable pre-commit workflow

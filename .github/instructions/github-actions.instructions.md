@@ -1,5 +1,5 @@
 ---
-applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,templates/github-workflows/**/*.yml"
+applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,template/.github/workflows/**"
 ---
 
 # Copilot code review: GitHub Actions
@@ -10,9 +10,9 @@ applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,templates/githu
 - **`release-on-tag.yml`** is **not** callable: it runs on **`push`** of SemVer tags and publishes a GitHub Release via **`scripts/publish_github_release.py`**. It needs **`permissions: contents: write`**; keep the tag glob aligned with **`docs/versioning.md`**.
 - **`reusable-pre-commit.yml`** should remain a thin, predictable pipeline: checkout → setup Python (with pip cache) → optional pre-install → install → `pre-commit run --all-files` (or overridden command). Avoid surprising side effects in defaults; document new **`inputs`** in `docs/reusable-workflows.md` and **`CHANGELOG.md`** when behavior or contract changes.
 
-## Template caller workflows (`templates/github-workflows/`)
+## Template caller workflows (`template/.github/workflows/`)
 
-- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref** (example in tree: `@v4.3.2`). When updating the example pin, consider whether **`STANDARDS_VERSION`**, **`CHANGELOG.md`**, and docs examples need the same bump for consistency.
+- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref** (example in tree: `@v4.3.2`). The pin is bumped by **`scripts/standards_release_bump.sh`** (`.bumpversion.toml`) and reaches consumers via `copier update`.
 - **`test.yml`** is a **starter only** for consumer repos. This standards repo does **not** ship a reusable test matrix. Reviews should resist moving project-specific test logic here unless the README and docs explicitly expand that scope.
 
 ## Review checklist

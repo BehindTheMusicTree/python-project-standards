@@ -3,7 +3,7 @@ requires = ["setuptools==75.2.0", "wheel==0.45.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "your-project-name"
+name = "{{ package_name }}"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = []
@@ -18,7 +18,7 @@ dev = [
 ]
 
 [tool.ruff]
-# Shared rule set lives in baselines/ruff.toml (digest-checked by verify-standards).
+# Shared rule set lives in baselines/ruff.toml (updated by `copier update`).
 # Optional overlay: extend-exclude / exclude, and [tool.ruff.lint] per-file-ignores only.
 extend = "baselines/ruff.toml"
 

@@ -6,9 +6,22 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+**Breaking:** consumers now adopt and update the baseline with **[Copier](https://copier.readthedocs.io/)** instead of copying files. See [docs/migration-guide.md](docs/migration-guide.md) (**Migrating from v4 (copied templates) to v5 (Copier)**).
+
+### Added
+
+- **Copier template**: [`copier.yml`](copier.yml) + [`template/`](template/) render `.pre-commit-config.yaml`, `baselines/ruff.toml` and optional `.github/workflows/lint.yml` (`reusable_lint` question), updated by `copier update`; `pyproject.toml` and `.github/workflows/test.yml` are bootstrap-only. The adopted release is recorded in `.copier-answers.yml`.
+
+### Removed
+
+- **`templates/`** (replaced by **`template/`**), including **`templates/cursor-rules/`**: agent/editor rules are no longer distributed to consumers.
+- **`scripts/verify-standards.sh`**, **`scripts/check_lint_baseline.py`**, **`baselines/DIGESTS`**, **`baselines/expected-mypy.json`** and the **`verify-python-project-standards`** pre-commit hook. Consumers no longer keep a **`STANDARDS_VERSION`** file.
+
 ### Changed
 
-- **Maintainer agent rules**: **`.cursor/rules/*.mdc`** moved to **`.claude/rules/*.md`** (Claude Code format, `globs` → `paths:`); [docs/development.md](docs/development.md) and **`.github/instructions/`** parity notes updated. **`templates/cursor-rules/`** is unchanged for consumers.
+- **Docs**: README, [migration-guide.md](docs/migration-guide.md), [development.md](docs/development.md), [versioning.md](docs/versioning.md), [reusable-workflows.md](docs/reusable-workflows.md) and **`.github/instructions/`** describe the Copier flow.
+
+- **Maintainer agent rules**: **`.cursor/rules/*.mdc`** moved to **`.claude/rules/*.md`** (Claude Code format, `globs` → `paths:`); [docs/development.md](docs/development.md) and **`.github/instructions/`** parity notes updated.
 
 - **graphify**: local knowledge-graph tooling (`CLAUDE.md` section, `.claude/settings.json` hooks, `.gitattributes` merge driver, `graphify-out/` gitignored).
 

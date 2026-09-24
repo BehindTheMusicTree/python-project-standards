@@ -31,30 +31,23 @@ This repository provides a shared baseline for Python projects so teams can:
 ## What Is Standardized
 
 - Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
-- `pyproject.toml` tooling sections (`ruff` via **`baselines/ruff.toml`** + thin overlay, strict **`mypy`** keys vs **`baselines/expected-mypy.json`**, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
+- `pyproject.toml` tooling sections (`ruff` via **`baselines/ruff.toml`** + thin overlay, strict **`mypy`** keys, `pytest`, **`pytest-cov`** in template dev extras for `pytest --cov=…`);
 - `.pre-commit-config.yaml` with pinned hook revisions;
-- CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests live in the consumer repo (start from **`templates/github-workflows/test.yml`**);
-- Cursor rules baseline for process conventions;
+- CI workflow baseline: **Tier A** `lint.yml` delegates to org **`reusable-pre-commit.yml`** (pin `@v…`); tests live in the consumer repo (start from **`template/.github/workflows/test.yml`**);
 - migration and versioning guidance.
 
 ## Repository Layout
 
-- `templates/pyproject/`: baseline `pyproject.toml` sections and examples.
-- `templates/baselines/`: vendored **`ruff.toml`**, **`DIGESTS`**, **`expected-mypy.json`** — copy into consumer **`baselines/`** (digest-checked by **`scripts/check_lint_baseline.py`**).
-- `templates/pre-commit/`: baseline `.pre-commit-config.yaml` (includes **`verify-python-project-standards`** hook).
-- `templates/scripts/`: `verify-standards.sh` and **`check_lint_baseline.py`** — copy into consumer **`scripts/`** next to the pre-commit hook.
-- `templates/github-workflows/`: copy-paste workflow examples for consumer repos.
+- `copier.yml` + `template/`: **[Copier](https://copier.readthedocs.io/)** template rendered into consumer repos — `.pre-commit-config.yaml`, `baselines/ruff.toml`, optional `.github/workflows/lint.yml` (updated by `copier update`), plus bootstrap-only `pyproject.toml` and `.github/workflows/test.yml`.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (shared pre-commit) for repos that reference this repository instead of duplicating lint YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
-- `templates/cursor-rules/`: baseline `.cursor/rules/*.mdc` files (dependency pinning, commit messages, PR workflow, documentation TOC, **changelog alignment**, **string enums / `StrEnum`**). **Consumers copy** the ones they need into their own `.cursor/rules/` — not installed automatically; see [docs/development.md](docs/development.md) (**Cursor / AI assistant rules**).
 - `docs/`: **[development.md](docs/development.md)** (hub), migration guide, versioning, reusable workflows, and style notes (e.g. [`string-enums.md`](docs/string-enums.md)).
-- `scripts/`: validation helpers for standards adoption; **`standards_release_bump.sh`** + **`finalize_standards_changelog.py`** automate SemVer bumps (see [docs/versioning.md](docs/versioning.md)). **`.bumpversion.toml`** configures **`bump-my-version`** for **`STANDARDS_VERSION`** and example **`@v…`** pins (not **`CHANGELOG.md`**).
+- `scripts/`: maintainer release tooling; **`standards_release_bump.sh`** + **`finalize_standards_changelog.py`** automate SemVer bumps (see [docs/versioning.md](docs/versioning.md)). **`.bumpversion.toml`** configures **`bump-my-version`** for **`STANDARDS_VERSION`** and example **`@v…`** pins (not **`CHANGELOG.md`**).
 
 ## Usage Model
 
-1. Start from these templates when creating a new Python repository.
-2. Copy the baseline into an existing repository.
-3. Add explicit, documented project-level overrides.
-4. Keep a `STANDARDS_VERSION` file in each consumer repository.
+1. Render the template into a new or existing repository with `copier copy`.
+2. Add explicit, documented project-level overrides.
+3. Pull new releases with `copier update`; the adopted release is recorded in `.copier-answers.yml`.
 
 ## Design Principles
 
@@ -66,16 +59,12 @@ This repository provides a shared baseline for Python projects so teams can:
 ## Quick Start (Consumer Repo)
 
 ```bash
-cp templates/pre-commit/.pre-commit-config.yaml /path/to/repo/.pre-commit-config.yaml
-cp templates/github-workflows/lint.yml /path/to/repo/.github/workflows/lint.yml
-cp templates/pyproject/pyproject.toml /path/to/repo/pyproject.toml
-mkdir -p /path/to/repo/baselines
-cp templates/baselines/* /path/to/repo/baselines/
+uv tool install copier==9.18.2
+copier copy gh:BehindTheMusicTree/python-project-standards /path/to/repo   # new repo
+copier update                                                             # later, from the repo root
 ```
 
-Then copy **`templates/scripts/verify-standards.sh`** and **`templates/scripts/check_lint_baseline.py`** to **`scripts/`** in the consumer repo (the pre-commit template runs **`verify-standards.sh`**, which invokes the Python checker). Adjust package metadata; keep **`[tool.ruff] extend = "baselines/ruff.toml"`** and put rule changes only in **`baselines/ruff.toml`** when upgrading from this repo.
-
-When publishing updates to these scripts, keep **`scripts/verify-standards.sh`** and **`templates/scripts/verify-standards.sh`** identical, and **`scripts/check_lint_baseline.py`** and **`templates/scripts/check_lint_baseline.py`** identical (or regenerate template copies from the canonical files).
+For an existing repository, see [docs/migration-guide.md](docs/migration-guide.md). Keep **`[tool.ruff] extend = "baselines/ruff.toml"`** in `pyproject.toml`; shared rule changes arrive through `copier update`.
 
 ## Adoption tiers
 
@@ -83,10 +72,10 @@ Not every Python repo should use the same CI shape. Use these tiers:
 
 | Tier | Typical repo | Use from this repo | Keep local |
 |------|----------------|-------------------|------------|
-| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
+| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`template/.github/workflows/test.yml`](template/.github/workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.3.2`** (or a commit SHA), not **`@main`**, and set [`STANDARDS_VERSION`](STANDARDS_VERSION) in the consumer repo to match. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v4.3.2`** (or a commit SHA), not **`@main`**; `copier update` bumps the template `lint.yml` pin. See [docs/versioning.md](docs/versioning.md).
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 
@@ -96,7 +85,7 @@ For orgs that keep this repo as the single source of truth, consumer workflows c
 
 - `.github/workflows/reusable-pre-commit.yml` — checkout, install, run `pre-commit` (Tier A and Tier B).
 
-There is **no** reusable test matrix; use [`templates/github-workflows/test.yml`](templates/github-workflows/test.yml) in the consumer repo and extend it as needed.
+There is **no** reusable test matrix; use [`template/.github/workflows/test.yml`](template/.github/workflows/test.yml) in the consumer repo and extend it as needed.
 
 See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples and the full input list.
 
