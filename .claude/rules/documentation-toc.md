@@ -1,7 +1,5 @@
 ---
-description: Markdown docs must include a table of contents aligned with headings
-globs: "**/*.md"
-alwaysApply: false
+paths: ["**/*.md"]
 ---
 
 # Documentation: aligned table of contents

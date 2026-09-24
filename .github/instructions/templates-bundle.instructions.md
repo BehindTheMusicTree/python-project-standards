@@ -10,7 +10,7 @@ These files are **copied into consumer repositories**. Drift between templates a
 
 - **`templates/scripts/verify-standards.sh`** must match **`scripts/verify-standards.sh`** at the repository root (see `README.md` **Quick Start**).
 - **`templates/scripts/check_lint_baseline.py`** must match **`scripts/check_lint_baseline.py`** at the repository root.
-- **`templates/cursor-rules/*.mdc`** should stay aligned with **`.cursor/rules/*.mdc`** for the same policy topics (paths inside rules may differ: templates sometimes use absolute GitHub links for copy-paste consumers).
+- **`templates/cursor-rules/*.mdc`** should stay aligned with **`.claude/rules/*.md`** for the same policy topics (frontmatter differs: `globs` vs `paths:`; paths inside rules may differ: templates sometimes use absolute GitHub links for copy-paste consumers).
 
 ## `templates/baselines/`
 

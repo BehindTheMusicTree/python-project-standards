@@ -1,7 +1,3 @@
----
-alwaysApply: true
----
-
 # Commit Message Convention
 
 Use Conventional Commits:

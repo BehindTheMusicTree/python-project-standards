@@ -1,7 +1,3 @@
----
-alwaysApply: true
----
-
 # Dependency Pinning
 
 Always pin exact versions for Python and tooling dependencies.
