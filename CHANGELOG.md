@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- **`test_workflow` question** in [`copier.yml`](copier.yml): gates the starter `.github/workflows/test.yml`. `_skip_if_exists` only protects existing files, so consumers that deleted it (tests in another workflow) had it re-created by `copier update`; answer `false` to opt out.
+
 ## [5.0.0] - 2026-09-24
 
 **Breaking:** consumers now adopt and update the baseline with **[Copier](https://copier.readthedocs.io/)** instead of copying files. See [docs/migration-guide.md](docs/migration-guide.md) (**Migrating from v4 (copied templates) to v5 (Copier)**).

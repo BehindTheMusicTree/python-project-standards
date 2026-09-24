@@ -72,7 +72,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 
 | Tier | Typical repo | Use from this repo | Keep local |
 |------|----------------|-------------------|------------|
-| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`template/.github/workflows/test.yml`](template/.github/workflows/test.yml) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
+| **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`template/.github/workflows/test.yml`](template/.github/workflows/) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
 **Pinning:** Consumer workflows should reference a **release tag** such as **`@v5.0.0`** (or a commit SHA), not **`@main`**; `copier update` bumps the template `lint.yml` pin. See [docs/versioning.md](docs/versioning.md).
@@ -85,7 +85,7 @@ For orgs that keep this repo as the single source of truth, consumer workflows c
 
 - `.github/workflows/reusable-pre-commit.yml` — checkout, install, run `pre-commit` (Tier A and Tier B).
 
-There is **no** reusable test matrix; use [`template/.github/workflows/test.yml`](template/.github/workflows/test.yml) in the consumer repo and extend it as needed.
+There is **no** reusable test matrix; use [`template/.github/workflows/test.yml`](template/.github/workflows/) in the consumer repo and extend it as needed.
 
 See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples and the full input list.
 

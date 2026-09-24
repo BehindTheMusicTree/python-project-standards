@@ -26,7 +26,7 @@ This repository uses the **`reusable-` prefix** as an **organizational conventio
 |------|---------|
 | [`reusable-pre-commit.yml`](../.github/workflows/reusable-pre-commit.yml) | Checkout, install, run `pre-commit` (Tier A and Tier B). |
 
-**Tests:** this repository does **not** ship a reusable test matrix. Use [`template/.github/workflows/test.yml`](../template/.github/workflows/test.yml) as a starting point in the consumer repo and add `strategy.matrix`, coverage, or service containers locally.
+**Tests:** this repository does **not** ship a reusable test matrix. Use [`template/.github/workflows/test.yml`](../template/.github/workflows/) as a starting point in the consumer repo and add `strategy.matrix`, coverage, or service containers locally.
 
 ## Example: pre-commit only (Tier B)
 

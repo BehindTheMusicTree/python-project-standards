@@ -8,7 +8,7 @@ These files are **rendered into consumer repositories** by `copier copy` and mer
 
 ## `copier.yml`
 
-- `_skip_if_exists` lists **bootstrap-only** files (`pyproject.toml`, `.github/workflows/test.yml`); everything else under `template/` is updated on `copier update`.
+- `_skip_if_exists` lists **bootstrap-only** files (`pyproject.toml`, `.github/workflows/test.yml`); everything else under `template/` is updated on `copier update`. `_skip_if_exists` only protects files that exist: a file a consumer deletes is re-created on update, so optional files use a question-gated filename (`reusable_lint`, `test_workflow`).
 - Renaming or removing a question is **breaking** for existing `.copier-answers.yml` files; document it in **`CHANGELOG.md`** and **`docs/migration-guide.md`**.
 
 ## `template/baselines/ruff.toml`
