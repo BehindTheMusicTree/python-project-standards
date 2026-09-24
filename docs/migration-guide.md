@@ -18,7 +18,7 @@ Reusable workflows are resolved **at CI runtime** from this repository. Template
 Prefer a **release tag** or **commit SHA**, not `main`:
 
 ```yaml
-uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v5.0.0
+uses: BehindTheMusicTree/python-project-standards/.github/workflows/reusable-pre-commit.yml@v5.1.0
 ```
 
 The template’s `lint.yml` carries this pin, so `copier update` bumps it. Repos with their own caller workflow (`reusable_lint: false`) bump the pin by hand. See [versioning.md](versioning.md).
@@ -28,7 +28,7 @@ The template’s `lint.yml` carries this pin, so `copier update` bumps it. Repos
 Install Copier with an exact pin (for example `uv tool install copier==9.18.2`), then from the repository root:
 
 ```bash
-copier copy --vcs-ref v5.0.0 gh:BehindTheMusicTree/python-project-standards . --overwrite
+copier copy --vcs-ref v5.1.0 gh:BehindTheMusicTree/python-project-standards . --overwrite
 git add -p   # keep repo-specific hooks and settings the template overwrote
 ```
 

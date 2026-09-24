@@ -6,6 +6,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [5.1.0] - 2026-09-24
+
 ### Added
 
 - **`test_workflow` question** in [`copier.yml`](copier.yml): gates the starter `.github/workflows/test.yml`. `_skip_if_exists` only protects existing files, so consumers that deleted it (tests in another workflow) had it re-created by `copier update`; answer `false` to opt out.
