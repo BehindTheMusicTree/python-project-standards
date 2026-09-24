@@ -6,6 +6,12 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Changed
+
+- **Maintainer agent rules**: **`.cursor/rules/*.mdc`** moved to **`.claude/rules/*.md`** (Claude Code format, `globs` → `paths:`); [docs/development.md](docs/development.md) and **`.github/instructions/`** parity notes updated. **`templates/cursor-rules/`** is unchanged for consumers.
+
+- **graphify**: local knowledge-graph tooling (`CLAUDE.md` section, `.claude/settings.json` hooks, `.gitattributes` merge driver, `graphify-out/` gitignored).
+
 ## [4.3.2] - 2026-04-13
 
 ### Fixed

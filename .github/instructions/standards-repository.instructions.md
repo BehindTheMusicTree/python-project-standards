@@ -9,7 +9,7 @@ This repository is an **organization-wide standards and template bundle** for Py
 ## What reviewers should prioritize
 
 - **Pinning and versioning:** Callable workflow `uses:` lines and documented examples should prefer **release tags** (`@vX.Y.Z`) or commit SHAs, not long-lived `@main`. When workflows reference this org repo, **`STANDARDS_VERSION`** in consumer repos should align with that pin (see `docs/versioning.md` and `README.md`).
-- **Template parity:** `scripts/verify-standards.sh` and `templates/scripts/verify-standards.sh` must stay **identical** (or regenerated from one canonical copy). The same applies to **`.cursor/rules/*.mdc`** and **`templates/cursor-rules/*.mdc`** when both exist for the same policy.
+- **Template parity:** `scripts/verify-standards.sh` and `templates/scripts/verify-standards.sh` must stay **identical** (or regenerated from one canonical copy). The same applies to **`.claude/rules/*.md`** and **`templates/cursor-rules/*.mdc`** when both exist for the same policy.
 - **Accurate consumer guidance:** Changes to templates (`pyproject`, pre-commit, workflows) should remain consistent with **`docs/development.md`**, **`docs/reusable-workflows.md`**, and **`README.md`** so adopters are not given conflicting commands or pins.
 - **Reusable workflow contract:** Edits to `.github/workflows/reusable-pre-commit.yml` are a **public API** for other repositories. Treat input renames, default changes, or step removals as **breaking** unless clearly backward compatible and documented in **`CHANGELOG.md`**.
 

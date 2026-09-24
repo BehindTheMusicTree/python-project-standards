@@ -1,7 +1,3 @@
----
-alwaysApply: true
----
-
 # PR Description Workflow
 
 PR descriptions should be drafted from a local markdown template before opening PRs.
