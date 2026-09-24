@@ -6,6 +6,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Fixed
+
+- **`template/baselines/ruff.toml` header**: dropped the v4 "vendored copy, do not edit" wording; the file is Copier-managed and local edits survive `copier update`.
+
 ## [5.1.0] - 2026-09-24
 
 ### Added
