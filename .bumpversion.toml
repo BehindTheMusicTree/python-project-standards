@@ -44,7 +44,7 @@ search = "v{current_version}"
 replace = "v{new_version}"
 
 [[tool.bumpversion.files]]
-filename = "templates/github-workflows/lint.yml"
+filename = "template/.github/workflows/{% if reusable_lint %}lint.yml{% endif %}.jinja"
 search = "@v{current_version}"
 replace = "@v{new_version}"
 
