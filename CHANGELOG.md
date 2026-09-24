@@ -6,6 +6,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-09-24
+
 **Breaking:** consumers now adopt and update the baseline with **[Copier](https://copier.readthedocs.io/)** instead of copying files. See [docs/migration-guide.md](docs/migration-guide.md) (**Migrating from v4 (copied templates) to v5 (Copier)**).
 
 ### Added
