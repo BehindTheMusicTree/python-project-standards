@@ -1,0 +1,30 @@
+name: Agent guidance
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          repository: BehindTheMusicTree/agent-config
+          ref: 1e199e26e8c5d8778d94547b96d42d6c075bc7e7
+          path: .agent-config-engine
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install copier==9.18.2
+      - name: Install actionlint
+        run: |
+          mkdir -p "$RUNNER_TEMP/agent-tools"
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz | tar xz -C "$RUNNER_TEMP/agent-tools" actionlint
+          echo "$RUNNER_TEMP/agent-tools" >> "$GITHUB_PATH"
+      - name: Check repository adapters
+        run: |
+          python3 .agent-config-engine/scripts/render-project-rules.py .
+          python3 .agent-config-engine/scripts/check-project-agents.py .
+      - name: Verify rendered consumer templates
+        run: bash scripts/tests/agent-template.sh "$GITHUB_WORKSPACE/.agent-config-engine/scripts/check-project-agents.py"

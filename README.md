@@ -28,6 +28,8 @@ This repository provides a shared baseline for Python projects so teams can:
 
 **[docs/development.md](docs/development.md)** is the hub for organization-wide Python development policy (links to migration, versioning, CI reusables, and style notes such as [string enums](docs/string-enums.md)). Point consumer `DEVELOPMENT.md` / contributor docs at that page for shared baselines.
 
+Portable agent guidance is an optional Copier bootstrap; see [development guidance](docs/development.md#portable-agent-guidance).
+
 ## What Is Standardized
 
 - Shared policy and doc index in **[docs/development.md](docs/development.md)** (includes links to style pages under `docs/`);
