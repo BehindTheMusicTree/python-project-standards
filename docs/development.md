@@ -7,6 +7,7 @@ This document is the **entry point** for cross-repository Python standards maint
 - [What lives in python-project-standards](#what-lives-in-python-project-standards)
 - [Python style (shared)](#python-style-shared)
 - [Tooling and layout](#tooling-and-layout)
+- [Portable agent guidance](#portable-agent-guidance)
 
 ## What lives in python-project-standards
 
@@ -24,3 +25,7 @@ Further style rules may be added under `docs/` over time; this page will link th
 ## Tooling and layout
 
 Baseline **pre-commit**, **`pyproject.toml`** tooling sections and **`baselines/ruff.toml`** ship as a **Copier template** ([`template/`](../template/), [`copier.yml`](../copier.yml)), described in the [README](../README.md) (**Repository layout**, **What Is Standardized**, **Quick Start**) and [migration-guide.md](migration-guide.md).
+
+## Portable agent guidance
+
+Projects may opt in to the Copier `agent_guidance` question to bootstrap `AGENTS.md`, its Claude import, and a drift-check workflow pinned to github-workflows `v4.8.0`. These are project-owned bootstrap files: existing files are preserved, and teams maintain them after creation. If existing instructions are present, reconcile them with the [agent-config project contract](https://github.com/BehindTheMusicTree/agent-config) before enabling the check. Shared Python style stays in these standards; architecture and operational commands stay in the consuming repository.

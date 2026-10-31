@@ -40,6 +40,6 @@ Rare code uses `type(x) is str` instead of `isinstance(x, str)`. Enum members ar
 **Optional extras:**
 
 - A **duplicate** pre-commit hook or small AST script (fail on `(str, Enum)` bases) if you want belt-and-suspenders or stricter failure modes than Ruff alone — keep it aligned with this doc if you keep it.
-- Agent rules (**`.claude/rules/*.md`**) that point here for editor and agent behavior.
+- Agent rules (**`.agents/rules/*.md`**) that point here for editor and agent behavior.
 
 If you **disable** `UP042` explicitly or drop **`UP`** from **`select`** in **`baselines/ruff.toml`**, you are opting out of lint enforcement; document that choice in the consumer repo.

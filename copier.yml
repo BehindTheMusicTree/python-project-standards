@@ -2,6 +2,9 @@ _subdirectory: template
 _skip_if_exists:
   - pyproject.toml
   - .github/workflows/test.yml
+  - AGENTS.md
+  - CLAUDE.md
+  - .github/workflows/agent-drift.yml
 
 package_name:
   type: str
@@ -16,3 +19,8 @@ test_workflow:
   type: bool
   default: true
   help: Add starter .github/workflows/test.yml (false when the repo runs tests in its own workflow)
+
+agent_guidance:
+  type: bool
+  default: false
+  help: Add starter agent guidance and a pinned agent drift workflow (existing files are preserved)

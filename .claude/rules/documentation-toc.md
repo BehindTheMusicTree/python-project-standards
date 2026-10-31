@@ -1,5 +1,6 @@
 ---
-paths: ["**/*.md"]
+paths:
+  - "**/*.md"
 ---
 
 # Documentation: aligned table of contents

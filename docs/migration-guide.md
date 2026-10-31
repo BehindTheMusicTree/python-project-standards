@@ -85,3 +85,7 @@ v5 removes the copy-and-verify machinery. In each consumer:
 ## 7. Tier B (API / service)
 
 Keep Docker, databases, and secrets in local workflows; call [reusable-pre-commit.yml](../.github/workflows/reusable-pre-commit.yml) for shared pre-commit in CI only, or answer `reusable_lint: false` and run pre-commit inline.
+
+## Optional agent guidance
+
+Set Copier answer `agent_guidance` to `true` to create project-owned starter guidance and a pinned drift-check workflow. Existing `AGENTS.md`, `CLAUDE.md`, and agent drift workflow files are preserved; reconcile their contents with the agent-config contract before enabling the check. The default is `false` for existing and new consumers.

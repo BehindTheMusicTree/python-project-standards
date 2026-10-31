@@ -6,6 +6,14 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Added
+
+- Optional portable agent guidance and a pinned drift check for new or existing Python projects.
+
+### Changed
+
+- Share repository agent rules between Claude and Codex with a generated scoped Markdown adapter.
+
 ### Fixed
 
 - **`docs/string-enums.md`**: optional agent rules now point at `.claude/rules/*.md` instead of Cursor `.mdc` rules.

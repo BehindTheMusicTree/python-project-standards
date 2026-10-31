@@ -1,0 +1,6 @@
+{
+  "documentation-toc": {
+    "source": ".agents/rules/documentation-toc.md",
+    "paths": ["**/*.md"]
+  }
+}
