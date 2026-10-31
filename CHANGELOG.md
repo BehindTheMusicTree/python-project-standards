@@ -6,6 +6,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [5.2.0] - 2026-10-31
+
 ### Added
 
 - Optional portable agent guidance and a pinned drift check for new or existing Python projects.
@@ -16,7 +18,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ### Fixed
 
-- **`docs/string-enums.md`**: optional agent rules now point at `.claude/rules/*.md` instead of Cursor `.mdc` rules.
+- **`docs/string-enums.md`**: optional agent rules now point at `.agents/rules/*.md` instead of obsolete Cursor `.mdc` rules.
 - **`template/baselines/ruff.toml` header**: dropped the v4 "vendored copy, do not edit" wording; the file is Copier-managed and local edits survive `copier update`.
 
 ## [5.1.0] - 2026-09-24
