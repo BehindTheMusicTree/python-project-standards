@@ -26,5 +26,7 @@ jobs:
         run: |
           python3 .agent-config-engine/scripts/render-project-rules.py .
           python3 .agent-config-engine/scripts/check-project-agents.py .
+      - name: Test release preparation
+        run: python3 -m unittest discover -s scripts/tests -p "test_release_*.py"
       - name: Verify rendered consumer templates
         run: bash scripts/tests/agent-template.sh "$GITHUB_WORKSPACE/.agent-config-engine/scripts/check-project-agents.py"

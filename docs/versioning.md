@@ -46,43 +46,26 @@ Each GitHub Release (and matching `CHANGELOG.md` section) should make adoption s
 
 ## Releasing (maintainers)
 
-Do this from a clean working tree on **`main`** (or your default branch).
+Prepare a release on a clean task branch created from current `main`. Keep the coordinated pins managed by `.bumpversion.toml`; `STANDARDS_VERSION` remains the canonical version.
 
 ### Automated bump (recommended)
 
-1. **Changelog draft** — Add release notes under **`## [Unreleased]`** in **`CHANGELOG.md`**, then **`git commit`** that draft (only the prep you want on **`main`**). **`scripts/standards_release_bump.sh`** refuses to start unless the working tree is **clean**, so **`bump-my-version`** can keep **`allow_dirty = false`** without toggling config.
+1. Commit meaningful release notes under `## [Unreleased]` in `CHANGELOG.md` on the task branch.
+2. Run `bash scripts/standards_release_bump.sh patch` (or `minor` / `major`). It updates the version, configured example pins, and changelog together. `--commit` stages only modified release paths and creates the preparation commit. Set `CHANGELOG_DATE=YYYY-MM-DD` to override the release date.
+3. Review the diff, including the updated changelog TOC. Commit the preparation and open a pull request against `main`.
+4. After merge, CI validates the version, mirror, nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The tag workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
 
-2. **Bump** — From the repository root, run **`bash scripts/standards_release_bump.sh patch`** (or **`minor`** / **`major`**). Optional **`--commit`**: after **`bump-my-version`** and **`finalize_standards_changelog.py`**, the script runs **`git add --`** on exactly the paths from **`git diff --name-only HEAD`** (release-only edits: pin files, **`CHANGELOG.md`**, etc.)—never **`git add -A`**—then **`git commit -m "chore(release): vX.Y.Z"`**. Without **`--commit`**, stage those same paths yourself (again: only **`git diff --name-only`**, not the whole tree), then commit. This runs **`bump-my-version`** using **`.bumpversion.toml`**, updating **`STANDARDS_VERSION`**, **`current_version`** in that config, and every listed **`@v…`** / example pin file **except** **`CHANGELOG.md`**. The script then runs **`scripts/finalize_standards_changelog.py`**, which reads the new version from **`STANDARDS_VERSION`** and moves the **`[Unreleased]`** body into **`## [X.Y.Z] - YYYY-MM-DD`** (today’s date by default). Set **`CHANGELOG_DATE=YYYY-MM-DD`** to override the date, or **`CHANGELOG_ALLOW_EMPTY=1`** to allow an empty **`[Unreleased]`** body. Arguments other than **`--commit`** are forwarded to **`bump-my-version bump`** (for example **`--dry-run`**); **`--commit`** is not passed through.
+`--dry-run` runs the coordinated bump simulation without finalizing the changelog or committing. Only `--dry-run`, `--verbose` and `-v` are forwarded; configuration overrides and tagging options are refused. Empty changelog sections are refused before the bump. The script also refuses `main`, `develop`, detached HEADs, and dirty trees.
 
-3. **Tag / push** — Create the annotated tag and push **`main`** + tag (see the manual checklist below). If you used **`--commit`**, the script prints the suggested **`git tag`** / **`git push`** line after the commit.
-
-4. **GitHub Release** — Same as step 6 below (tag push triggers **`release-on-tag.yml`** when applicable).
-
-**Tooling:** Prefer **`uv run --with bump-my-version==1.3.0 …`** so no project virtualenv is required; otherwise install **`bump-my-version==1.3.0`** and ensure **`bump-my-version`** is on **`PATH`**. If **`bump-my-version`** crashes on macOS, set **`BUMP_MY_VERSION_PYTHON=3.12`** (see [Troubleshooting](#troubleshooting-bump-my-version-on-macos) below). If you truly must bump with unrelated local edits, pass **`--allow-dirty`** through to **`bump-my-version bump`** (advanced; not recommended).
+**Tooling:** Prefer `uv run --with bump-my-version==1.3.0 …`; otherwise install `bump-my-version==1.3.0` on `PATH`. If the tool crashes on macOS, set `BUMP_MY_VERSION_PYTHON=3.12` (see troubleshooting below).
 
 ### Manual checklist
 
-1. **Changelog**  
-   - Move items from `## [Unreleased]` into a new `## [X.Y.Z] - YYYY-MM-DD` section (or fold into the version you are cutting).  
-   - Leave `## [Unreleased]` empty or remove subsection bullets until the next change.
+1. On the task branch, set `STANDARDS_VERSION`, `.bumpversion.toml` `current_version`, and every pin listed in that configuration to the same new version.
+2. Move release notes into the unique matching `## [X.Y.Z] - YYYY-MM-DD` changelog section, retaining an empty `Unreleased` section and updating the TOC.
+3. Commit, open a pull request against `main`, and let CI create the tag and release after merge. Do not tag or publish locally. `scripts/publish_github_release.py --dry-run` remains available to preview notes; local publication is refused once the release policy is present.
 
-2. **Version file**  
-   - Set root **`STANDARDS_VERSION`** to **`X.Y.Z`** (no `v`), and keep **`.bumpversion.toml`** **`current_version`** in sync if you use the automated bump config.
-
-3. **Commit**  
-   - One commit for the release prep, for example: `chore(release): v2.0.0`.
-
-4. **Tag**  
-   - Create an annotated tag: `git tag -a vX.Y.Z -m "vX.Y.Z"`  
-   - Light tags are acceptable if your org standardizes on them; annotated tags carry the message on `git show`.
-
-5. **Push**  
-   - `git push origin main` and `git push origin vX.Y.Z` (or push all tags).
-
-6. **GitHub Release**  
-   - **Automated (default):** pushing a SemVer tag matching **`v*.*.*`** (for example **`v5.2.0`**) runs [`.github/workflows/release-on-tag.yml`](../.github/workflows/release-on-tag.yml), which calls **`scripts/publish_github_release.py`** with **`GITHUB_REF_NAME`**. The script reads the matching **`## [X.Y.Z]`** block from **`CHANGELOG.md`** and runs **`gh release create`** with **`--verify-tag`** using the workflow token.
-   - **Local (optional):** with **`gh`** installed and **`gh auth login`**, and **`vX.Y.Z`** already on **`origin`**: **`python3 scripts/publish_github_release.py`** (uses **`STANDARDS_VERSION`** if you omit the version). Supports **`--draft`**, **`--dry-run`**.  
-   - **Manual:** **Releases → Draft a new release → Choose tag `vX.Y.Z`**, paste the **`CHANGELOG.md`** section if you skip automation.
+Initial adoption keeps version v5.2.0 and creates no tag. App access and tag protections are activated separately through `github-config` before a subsequent release is prepared.
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
 
