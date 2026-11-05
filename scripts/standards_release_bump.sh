@@ -3,10 +3,10 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 patch|minor|major [--commit] [bump-my-version args...]" >&2
+  echo "usage: $0 patch|minor|major [--commit] [--dry-run] [--verbose]" >&2
   echo "  Requires a clean git working tree (matches .bumpversion.toml allow_dirty = false)." >&2
   echo "  --commit  after bump + finalize, git add only files changed since HEAD, then commit chore(release): vX.Y.Z" >&2
-  echo "Optional env: CHANGELOG_DATE=YYYY-MM-DD, CHANGELOG_ALLOW_EMPTY=1 (passed to finalize script)." >&2
+  echo "Optional env: CHANGELOG_DATE=YYYY-MM-DD (passed to finalize script)." >&2
   echo "Optional env: BUMP_MY_VERSION_PYTHON=3.12 (or an interpreter path) — forwarded as uv run --python when using uv;" >&2
   echo "  use if bump-my-version segfaults on macOS (often default pyenv 3.14 + native deps or uv/sandbox interaction)." >&2
 }
@@ -27,15 +27,28 @@ while [[ $# -gt 0 ]]; do
       commit_release=true
       shift
       ;;
-    *)
+    --dry-run|--verbose|-v)
       bump_args+=("$1")
       shift
+      ;;
+    *)
+      echo "error: unsupported option: $1 (tagging and configuration overrides are not allowed)." >&2
+      exit 1
       ;;
   esac
 done
 
 root="$(git rev-parse --show-toplevel)"
 cd "$root"
+
+branch="$(git symbolic-ref --quiet --short HEAD)" || {
+  echo "error: use a task branch, not a detached HEAD." >&2
+  exit 1
+}
+if [[ "$branch" == main || "$branch" == develop ]]; then
+  echo "error: prepare releases on a task branch and open a pull request against main." >&2
+  exit 1
+fi
 
 if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
   echo "error: git working tree is not clean (see git status)." >&2
@@ -52,6 +65,8 @@ for a in "${bump_args[@]}"; do
   fi
 done
 
+python3 "$root/scripts/finalize_standards_changelog.py" --check-unreleased
+
 uv_python_args=()
 if [[ -n "${BUMP_MY_VERSION_PYTHON:-}" ]]; then
   uv_python_args=(--python "$BUMP_MY_VERSION_PYTHON")
@@ -63,34 +78,35 @@ else
   bump-my-version bump "$part" "${bump_args[@]}"
 fi
 
+if [[ "$dry_run" == true ]]; then
+  echo "Dry run complete; version, changelog, and commits are unchanged."
+  exit 0
+fi
+
 py=(python3 "$root/scripts/finalize_standards_changelog.py")
 [[ -n "${CHANGELOG_DATE:-}" ]] && py+=(--date "$CHANGELOG_DATE")
-[[ -n "${CHANGELOG_ALLOW_EMPTY:-}" ]] && py+=(--allow-empty)
 "${py[@]}"
 
 ver="$(tr -d '[:space:]' <"$root/STANDARDS_VERSION")"
 
 if [[ "$commit_release" == true ]]; then
-  if [[ "$dry_run" == true ]]; then
-    echo "Skipping --commit because bump-my-version was run with --dry-run."
-  else
-    changed=()
-    while IFS= read -r line; do
-      [[ -n "$line" ]] && changed+=("$line")
-    done < <(git diff --name-only HEAD)
+  changed=()
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && changed+=("$line")
+  done < <(git diff --name-only HEAD)
 
-    if [[ ${#changed[@]} -eq 0 ]]; then
-      echo "error: no modified files after bump + finalize; nothing to commit." >&2
-      exit 1
-    fi
-
-    git add -- "${changed[@]}"
-    git commit -m "chore(release): v${ver}"
-    printf '%s\n' "Committed release-only paths: ${changed[*]}"
-    printf '%s\n' "Next: git tag -a \"v${ver}\" -m \"v${ver}\" && git push origin main && git push origin \"v${ver}\""
+  if [[ ${#changed[@]} -eq 0 ]]; then
+    echo "error: no modified files after bump + finalize; nothing to commit." >&2
+    exit 1
   fi
+
+  git add -- "${changed[@]}"
+  git commit -m "chore(release): v${ver}"
+  printf '%s\n' "Committed release-only paths: ${changed[*]}"
+  printf '%s\n' "Next: open a pull request against main; CI creates the release tag after merge."
 else
   printf '%s\n' "Next: review git diff; stage only release files (paths from: git diff --name-only HEAD), then:"
-  printf '%s\n' "  git commit -m \"chore(release): v${ver}\" && git tag -a \"v${ver}\" -m \"v${ver}\" && git push origin main && git push origin \"v${ver}\""
+  printf '%s\n' "  git commit -m \"chore(release): v${ver}\""
+  printf '%s\n' "Then open a pull request against main; CI creates the tag and publishes the release."
   printf '%s\n' "Tip: pass --commit on this script to create that commit automatically (same paths only, never git add -A)."
 fi

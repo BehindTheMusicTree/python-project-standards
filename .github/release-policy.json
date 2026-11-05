@@ -1,0 +1,20 @@
+{
+  "release_branch": "main",
+  "version": {
+    "path": "STANDARDS_VERSION",
+    "format": "text"
+  },
+  "mirrors": [
+    {
+      "path": ".bumpversion.toml",
+      "format": "toml",
+      "key": "tool.bumpversion.current_version"
+    }
+  ],
+  "tag_prefix": "v",
+  "changelog": "CHANGELOG.md",
+  "outputs": {
+    "github_release": true,
+    "packages": []
+  }
+}

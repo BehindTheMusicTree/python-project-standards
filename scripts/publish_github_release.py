@@ -31,7 +31,12 @@ def _git_root() -> Path:
 def _read_version(root: Path, explicit: str | None) -> str:
     if explicit:
         return explicit.removeprefix("v")
-    return (root / "STANDARDS_VERSION").read_text(encoding="utf-8").strip().removeprefix("v")
+    return (
+        (root / "STANDARDS_VERSION")
+        .read_text(encoding="utf-8")
+        .strip()
+        .removeprefix("v")
+    )
 
 
 def _extract_changelog_body(changelog_text: str, version: str) -> str | None:
@@ -76,6 +81,8 @@ def main() -> None:
     args = parser.parse_args()
 
     root = _git_root()
+    if (root / ".github/release-policy.json").exists() and not args.dry_run:
+        parser.error("Publication is owned by CI; rerun the Release on tag workflow.")
     ver = _read_version(root, args.version)
     tag = f"v{ver}"
 

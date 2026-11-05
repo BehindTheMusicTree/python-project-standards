@@ -68,6 +68,11 @@ def main() -> None:
         action="store_true",
         help="Print the new section only; do not write CHANGELOG.md.",
     )
+    parser.add_argument(
+        "--check-unreleased",
+        action="store_true",
+        help="Require nonempty release notes without writing files.",
+    )
     args = parser.parse_args()
 
     root = _repo_root()
@@ -77,13 +82,22 @@ def main() -> None:
     lines = text.splitlines(keepends=True)
 
     start, j, body = _split_unreleased(lines)
-    if not body.strip() and not args.allow_empty:
+    meaningful = re.sub(r"<!--.*?-->", "", body, flags=re.DOTALL)
+    meaningful = "\n".join(
+        line
+        for line in meaningful.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    )
+    if not meaningful.strip() and not args.allow_empty:
         print(
             "CHANGELOG.md: ## [Unreleased] has no release notes. "
             "Add bullets or pass --allow-empty.",
             file=sys.stderr,
         )
         sys.exit(1)
+
+    if args.check_unreleased:
+        return
 
     header = f"## [{version}] - {args.date or date.today().isoformat()}\n"
     new_block = f"## [Unreleased]\n\n{header}\n"
@@ -94,11 +108,23 @@ def main() -> None:
 
     tail = "".join(lines[j:])
     if re.search(rf"^## \[{re.escape(version)}\]", tail, re.MULTILINE):
-        print(f"CHANGELOG.md already contains ## [{version}] below [Unreleased].", file=sys.stderr)
+        print(
+            f"CHANGELOG.md already contains ## [{version}] below [Unreleased].",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     out_lines = lines[:start] + [new_block] + lines[j:]
     out = "".join(out_lines)
+
+    anchor_version = version.replace(".", "")
+    toc_entry = "- [Unreleased](#unreleased)"
+    if toc_entry in out:
+        out = out.replace(
+            toc_entry,
+            f"{toc_entry}\n- [{version} - {args.date or date.today().isoformat()}](#{anchor_version}---{args.date or date.today().isoformat()})",
+            1,
+        )
 
     if args.dry_run:
         print(new_block, end="")
