@@ -30,6 +30,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ### Changed
 
+- Preserve complete release notes when Markdown examples contain version headings.
+
 - Prepare coordinated version and pin updates on a task branch; CI validates the merged release, creates its tag, and publishes changelog notes. Dry runs leave all files unchanged.
 
 ## [5.2.0] - 2026-10-31
