@@ -30,6 +30,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ### Changed
 
+- Removed the graphify `merge=graphify` git attribute, which pointed at a machine-specific merge driver; the global agent-config freshness hook keeps the graph fresh.
 - Preserve complete release notes when Markdown examples contain version headings.
 
 - Prepare coordinated version and pin updates on a task branch; CI validates the merged release, creates its tag, and publishes changelog notes. Dry runs leave all files unchanged.
