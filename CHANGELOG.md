@@ -35,6 +35,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - Prepare coordinated version and pin updates on a task branch; CI validates the merged release, creates its tag, and publishes changelog notes. Dry runs leave all files unchanged.
 
+### Fixed
+
+- **Agent directories**: Keep plans and scratch data out of Git while tracking the directory ignore rules.
+
 ### CI
 
 - Pin the shared release workflows to the lag-tolerant github-workflows commit 79c1362, so tag creation tolerates GitHub read-after-write delays.
