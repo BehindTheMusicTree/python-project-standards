@@ -1,8 +1,4 @@
----
-applyTo: "docs/**/*.md,README.md,CHANGELOG.md"
----
-
-# Copilot code review: Markdown documentation
+# Review: Markdown documentation
 
 ## Hub and cross-links
 
@@ -11,7 +7,7 @@ applyTo: "docs/**/*.md,README.md,CHANGELOG.md"
 
 ## Table of contents
 
-For substantial Markdown (`README.md`, `docs/**/*.md`, `CHANGELOG.md` when it uses multiple `##` sections), follow the same TOC discipline as **`.claude/rules/documentation-toc.md`**:
+For substantial Markdown (`README.md`, `docs/**/*.md`, `CHANGELOG.md` when it uses multiple `##` sections), follow the same TOC discipline as **`.agents/rules/documentation-toc.md`**:
 
 1. Add **`## Table of Contents`** after the title (and short intro if present).
 2. List every navigable **`##`** section in order with GitHub-style anchor links; update the TOC in the **same change** as heading edits.

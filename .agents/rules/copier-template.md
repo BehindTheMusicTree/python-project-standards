@@ -1,8 +1,4 @@
----
-applyTo: "template/**/*,copier.yml"
----
-
-# Copilot code review: Copier template (`template/`, `copier.yml`)
+# Review: Copier template (`template/`, `copier.yml`)
 
 These files are **rendered into consumer repositories** by `copier copy` and merged by `copier update`. Every change reaches adopters on their next update.
 
@@ -28,4 +24,4 @@ These files are **rendered into consumer repositories** by `copier copy` and mer
 
 ## `template/.github/workflows/`
 
-See **`github-actions.instructions.md`** for reusable vs template caller expectations and pinning.
+See **`.agents/rules/github-actions.md`** for reusable vs template caller expectations and pinning.
