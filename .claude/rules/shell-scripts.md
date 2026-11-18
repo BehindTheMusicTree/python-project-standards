@@ -1,8 +1,10 @@
 ---
-applyTo: "scripts/**/*.sh,scripts/**/*.py"
+paths:
+  - "scripts/**/*.sh"
+  - "scripts/**/*.py"
 ---
 
-# Copilot code review: shell scripts
+# Review: shell scripts
 
 - Prefer **`#!/usr/bin/env bash`** with **`set -euo pipefail`** for new or heavily edited scripts.
 - **`scripts/publish_github_release.py`** is maintainer-only: keep it working with **`CHANGELOG.md`** section headers **`## [X.Y.Z]`** and **`gh release create`**.

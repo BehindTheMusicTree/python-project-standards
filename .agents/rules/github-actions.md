@@ -1,8 +1,4 @@
----
-applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml,template/.github/workflows/**"
----
-
-# Copilot code review: GitHub Actions
+# Review: GitHub Actions
 
 ## Callable workflows (this repository)
 

@@ -1,6 +1,38 @@
 {
   "documentation-toc": {
     "source": ".agents/rules/documentation-toc.md",
-    "paths": ["**/*.md"]
+    "paths": [
+      "**/*.md"
+    ]
+  },
+  "copier-template": {
+    "source": ".agents/rules/copier-template.md",
+    "paths": [
+      "template/**/*",
+      "copier.yml"
+    ]
+  },
+  "github-actions": {
+    "source": ".agents/rules/github-actions.md",
+    "paths": [
+      ".github/workflows/**/*.yml",
+      ".github/workflows/**/*.yaml",
+      "template/.github/workflows/**"
+    ]
+  },
+  "markdown-documentation": {
+    "source": ".agents/rules/markdown-documentation.md",
+    "paths": [
+      "docs/**/*.md",
+      "README.md",
+      "CHANGELOG.md"
+    ]
+  },
+  "shell-scripts": {
+    "source": ".agents/rules/shell-scripts.md",
+    "paths": [
+      "scripts/**/*.sh",
+      "scripts/**/*.py"
+    ]
   }
 }
