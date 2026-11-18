@@ -35,6 +35,10 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 - Prepare coordinated version and pin updates on a task branch; CI validates the merged release, creates its tag, and publishes changelog notes. Dry runs leave all files unchanged.
 
+### Removed
+
+- Drop the tracked `.agent-plans/.gitignore`: plans now live in the common git directory.
+
 ### Fixed
 
 - **Agent directories**: Keep plans and scratch data out of Git while tracking the directory ignore rules.
