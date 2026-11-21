@@ -46,7 +46,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 ### CI
 
 - Pin the shared release workflows to the lag-tolerant github-workflows commit 79c1362, so tag creation tolerates GitHub read-after-write delays.
-
+- Add the canonical workflow `concurrency` groups to `agent-guidance`, `release-tag` and `release-on-tag`.
 
 ## [5.2.0] - 2026-10-31
 
