@@ -45,6 +45,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ### CI
 
+- Pushes and pull requests run the `org-conformance` check (github-workflows v6.5.0), which `required-checks.json` in github-config declares as an optional job.
 - Pin the shared release workflows to the lag-tolerant github-workflows commit 79c1362, so tag creation tolerates GitHub read-after-write delays.
 - Add the canonical workflow `concurrency` groups to `agent-guidance`, `release-tag` and `release-on-tag`.
 
