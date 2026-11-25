@@ -30,6 +30,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ### Changed
 
+- Publish GitHub Releases from the release-tag workflow, keeping tagging and publication on the same workflow version.
+
 - Removed the graphify `merge=graphify` git attribute, which pointed at a machine-specific merge driver; the global agent-config freshness hook keeps the graph fresh.
 - Preserve complete release notes when Markdown examples contain version headings.
 
