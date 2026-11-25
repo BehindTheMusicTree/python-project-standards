@@ -3,7 +3,7 @@
 ## Callable workflows (this repository)
 
 - Files under **`.github/workflows/`** that define **`on: workflow_call`** are **reusable entry points**. This repo uses the **`reusable-` filename prefix** as an org convention for discoverability (see `docs/reusable-workflows.md`). Renaming a published reusable file is a **breaking change** for every consumer `uses:` path.
-- **`release-tag.yml`** runs on pushes to `main`. On a version bump, its shared workflow creates the tag and publishes the GitHub Release. The calling job grants `contents: write` for publication. Its `release-please` job stays suspended until the repository is enrolled for Release Please. See **`docs/versioning.md`**.
+- **`release-tag.yml`** runs on pushes to `main`. On a version bump, its shared workflow creates the tag and publishes the GitHub Release. The calling job grants `contents: write` for publication. Its `release-please` job opens and maintains the release PR from conventional PR titles. See **`docs/versioning.md`**.
 - **`reusable-pre-commit.yml`** should remain a thin, predictable pipeline: checkout → setup Python (with pip cache) → optional pre-install → install → `pre-commit run --all-files` (or overridden command). Avoid surprising side effects in defaults; document new **`inputs`** in `docs/reusable-workflows.md` and **`CHANGELOG.md`** when behavior or contract changes.
 
 ## Template caller workflows (`template/.github/workflows/`)
