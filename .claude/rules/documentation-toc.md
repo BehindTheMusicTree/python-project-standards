@@ -5,7 +5,7 @@ paths:
 
 # Documentation: aligned table of contents
 
-When you add or edit **project documentation** in Markdown (`README.md`, `docs/**/*.md`, `CHANGELOG.md`, etc.):
+When you add or edit **project documentation** in Markdown (`README.md`, `docs/**/*.md`, etc.; not the generated `CHANGELOG.md`):
 
 1. **Include a TOC** near the top: after the H1 title and any one-line blurb, add `## Table of Contents` before the first real content section.
 2. **Keep it aligned**: Every `##` section in the file appears as a TOC bullet **in the same order**, with an anchor link. Skip only headings that are not meant to be navigated (never link `## Table of Contents` itself).
