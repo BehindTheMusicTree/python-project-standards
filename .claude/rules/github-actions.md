@@ -10,12 +10,12 @@ paths:
 ## Callable workflows (this repository)
 
 - Files under **`.github/workflows/`** that define **`on: workflow_call`** are **reusable entry points**. This repo uses the **`reusable-` filename prefix** as an org convention for discoverability (see `docs/reusable-workflows.md`). Renaming a published reusable file is a **breaking change** for every consumer `uses:` path.
-- **`release-tag.yml`** runs on pushes to `main`. On a version bump, its shared workflow creates the tag and publishes the GitHub Release. The calling job grants `contents: write` for publication. See **`docs/versioning.md`**.
+- **`release-tag.yml`** runs on pushes to `main`. On a version bump, its shared workflow creates the tag and publishes the GitHub Release. The calling job grants `contents: write` for publication. Its `release-please` job stays suspended until the repository is enrolled for Release Please. See **`docs/versioning.md`**.
 - **`reusable-pre-commit.yml`** should remain a thin, predictable pipeline: checkout → setup Python (with pip cache) → optional pre-install → install → `pre-commit run --all-files` (or overridden command). Avoid surprising side effects in defaults; document new **`inputs`** in `docs/reusable-workflows.md` and **`CHANGELOG.md`** when behavior or contract changes.
 
 ## Template caller workflows (`template/.github/workflows/`)
 
-- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref**. The pin is bumped by **`scripts/standards_release_bump.sh`** (`.bumpversion.toml`) and reaches consumers via `copier update`.
+- **`lint.yml`** is the **Tier A** pattern: a single job that **`uses:`** the org reusable workflow with a **pinned ref**. Its pin carries the `x-release-please-version` marker so release preparation bumps it with `STANDARDS_VERSION`, and it reaches consumers via `copier update`.
 - **`test.yml`** is a **starter only** for consumer repos. This standards repo does **not** ship a reusable test matrix. Reviews should resist moving project-specific test logic here unless the README and docs explicitly expand that scope.
 
 ## Review checklist

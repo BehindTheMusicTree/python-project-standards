@@ -29,6 +29,14 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+### Changed
+
+- Prepare the move to Release Please: mark the seven standards pins with `x-release-please-version`, add the `pr-title` check and a suspended `release-please` job, and check that marked pins match `STANDARDS_VERSION`.
+
+### Removed
+
+- The manual bump path (`scripts/standards_release_bump.sh`, `scripts/finalize_standards_changelog.py`, `scripts/publish_github_release.py` and `.bumpversion.toml`) and the `.bumpversion.toml` mirror in the release policy. CI already owns tagging and publication.
+
 ## [5.2.1] - 2026-11-25
 
 ### Changed

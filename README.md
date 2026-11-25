@@ -43,7 +43,7 @@ Portable agent guidance is an optional Copier bootstrap; see [development guidan
 - `copier.yml` + `template/`: **[Copier](https://copier.readthedocs.io/)** template rendered into consumer repos — `.pre-commit-config.yaml`, `baselines/ruff.toml`, optional `.github/workflows/lint.yml` (updated by `copier update`), plus bootstrap-only `pyproject.toml` and `.github/workflows/test.yml`.
 - `.github/workflows/reusable-*.yml`: **callable** workflows (shared pre-commit) for repos that reference this repository instead of duplicating lint YAML. The **`reusable-` filename prefix** is an org convention for discoverability, not a GitHub requirement — see the **Naming** section in [docs/reusable-workflows.md](docs/reusable-workflows.md).
 - `docs/`: **[development.md](docs/development.md)** (hub), migration guide, versioning, reusable workflows, and style notes (e.g. [`string-enums.md`](docs/string-enums.md)).
-- `scripts/`: maintainer release tooling; **`standards_release_bump.sh`** + **`finalize_standards_changelog.py`** automate SemVer bumps (see [docs/versioning.md](docs/versioning.md)). **`.bumpversion.toml`** configures **`bump-my-version`** for **`STANDARDS_VERSION`** and example **`@v…`** pins (not **`CHANGELOG.md`**).
+- `scripts/tests/`: repository checks, including the read-only sync between **`STANDARDS_VERSION`** and every pin carrying the Release Please version marker (see [docs/versioning.md](docs/versioning.md)).
 
 ## Usage Model
 
@@ -77,7 +77,7 @@ Not every Python repo should use the same CI shape. Use these tiers:
 | **A — Library** | Packaged library, multi-OS/Python matrix, `pyproject.toml` dev extras | **Delegated** [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml) for lint; **owned** `test.yml` (see [`template/.github/workflows/test.yml`](template/.github/workflows/) + local matrix/coverage) | Thin `lint.yml` caller; full control over test CI |
 | **B — Service / API** | Django/FastAPI apps, Docker, DB, secrets, long integration jobs | [`reusable-pre-commit.yml`](.github/workflows/reusable-pre-commit.yml), pre-commit + policy templates | Full test / deploy workflows in the app repository |
 
-**Pinning:** Consumer workflows should reference a **release tag** such as **`@v5.2.1`** (or a commit SHA), not **`@main`**; `copier update` bumps the template `lint.yml` pin. See [docs/versioning.md](docs/versioning.md).
+**Pinning:** Consumer workflows should reference a **release tag** such as **`@v5.2.1`** (or a commit SHA), not **`@main`**; `copier update` bumps the template `lint.yml` pin. See [docs/versioning.md](docs/versioning.md). <!-- x-release-please-version -->
 
 **Example Tier B:** [hear-the-music-tree-api](https://github.com/BehindTheMusicTree/hear-the-music-tree-api) keeps database and containerized pytest in its own workflow and may call **reusable pre-commit** only. See that repo’s `docs/ci/python-project-standards.md`.
 
@@ -95,7 +95,7 @@ See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples
 
 Versions are **SemVer** (`v1.2.3` tags, `STANDARDS_VERSION` without `v`). Maintainers prepare version and **`CHANGELOG.md`** changes through a PR to `main`; CI creates **`vX.Y.Z`** and publishes a **GitHub Release** with the same notes. Consumers pin callable workflows to that tag (or a commit SHA), not to `main` long term.
 
-After a version change merges into `main`, [`.github/workflows/release-tag.yml`](.github/workflows/release-tag.yml) creates the SemVer tag and publishes the GitHub Release from the matching **`CHANGELOG.md`** section. Use **`python3 scripts/publish_github_release.py --dry-run`** locally to preview notes; publication is owned by CI (see **[docs/versioning.md](docs/versioning.md)**).
+After a version change merges into `main`, [`.github/workflows/release-tag.yml`](.github/workflows/release-tag.yml) creates the SemVer tag and publishes the GitHub Release from the matching **`CHANGELOG.md`** section. Publication is owned by CI; Release Please will prepare version and changelog PRs from conventional PR titles once activated (see **[docs/versioning.md](docs/versioning.md)**).
 
 ## Status
 
