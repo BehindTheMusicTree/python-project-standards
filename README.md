@@ -95,7 +95,7 @@ See [docs/reusable-workflows.md](docs/reusable-workflows.md) for caller examples
 
 Versions are **SemVer** (`v1.2.3` tags, `STANDARDS_VERSION` without `v`). Maintainers prepare version and **`CHANGELOG.md`** changes through a PR to `main`; CI creates **`vX.Y.Z`** and publishes a **GitHub Release** with the same notes. Consumers pin callable workflows to that tag (or a commit SHA), not to `main` long term.
 
-Pushing a SemVer tag like **`v5.2.0`** triggers [`.github/workflows/release-on-tag.yml`](.github/workflows/release-on-tag.yml), which publishes the GitHub Release from the matching **`CHANGELOG.md`** section. Use **`python3 scripts/publish_github_release.py --dry-run`** locally to preview notes; publication is owned by CI (see **[docs/versioning.md](docs/versioning.md)**).
+After a version change merges into `main`, [`.github/workflows/release-tag.yml`](.github/workflows/release-tag.yml) creates the SemVer tag and publishes the GitHub Release from the matching **`CHANGELOG.md`** section. Use **`python3 scripts/publish_github_release.py --dry-run`** locally to preview notes; publication is owned by CI (see **[docs/versioning.md](docs/versioning.md)**).
 
 ## Status
 

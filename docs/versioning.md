@@ -53,7 +53,7 @@ Prepare a release on a clean task branch created from current `main`. Keep the c
 1. Commit meaningful release notes under `## [Unreleased]` in `CHANGELOG.md` on the task branch.
 2. Run `bash scripts/standards_release_bump.sh patch` (or `minor` / `major`). It updates the version, configured example pins, and changelog together. `--commit` stages only modified release paths and creates the preparation commit. Set `CHANGELOG_DATE=YYYY-MM-DD` to override the release date.
 3. Review the diff, including the updated changelog TOC. Commit the preparation and open a pull request against `main`.
-4. After merge, CI validates the version, mirror, nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The tag workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
+4. After merge, CI validates the version, mirror, nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The same workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
 
 `--dry-run` runs the coordinated bump simulation without finalizing the changelog or committing. Only `--dry-run`, `--verbose` and `-v` are forwarded; configuration overrides and tagging options are refused. Empty changelog sections are refused before the bump. The script also refuses `main`, `develop`, detached HEADs, and dirty trees.
 
