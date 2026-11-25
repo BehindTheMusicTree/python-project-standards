@@ -7,6 +7,7 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [5.2.1 - 2026-11-25](#521---2026-11-25)
 - [5.2.0 - 2026-10-31](#520---2026-10-31)
 - [5.1.0 - 2026-09-24](#510---2026-09-24)
 - [5.0.0 - 2026-09-24](#500---2026-09-24)
@@ -28,6 +29,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 
 ## [Unreleased]
 
+## [5.2.1] - 2026-11-25
+
 ### Changed
 
 - Publish GitHub Releases from the release-tag workflow, keeping tagging and publication on the same workflow version.
@@ -48,8 +51,8 @@ The format is inspired by Keep a Changelog and follows semantic-style versioning
 ### CI
 
 - Pushes and pull requests run the `org-conformance` check (github-workflows v6.5.0), which `required-checks.json` in github-config declares as an optional job.
-- Pin the shared release workflows to the lag-tolerant github-workflows commit 79c1362, so tag creation tolerates GitHub read-after-write delays.
-- Add the canonical workflow `concurrency` groups to `agent-guidance`, `release-tag` and `release-on-tag`.
+- Pin the release-tag workflow to github-workflows commit 8b10f1d, which tolerates GitHub read-after-write delays and publishes the GitHub Release.
+- Add canonical workflow `concurrency` groups to `agent-guidance` and `release-tag`.
 
 ## [5.2.0] - 2026-10-31
 
