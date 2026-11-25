@@ -46,45 +46,17 @@ Each GitHub Release (and matching `CHANGELOG.md` section) should make adoption s
 
 ## Releasing (maintainers)
 
-Prepare a release on a clean task branch created from current `main`. Keep the coordinated pins managed by `.bumpversion.toml`; `STANDARDS_VERSION` remains the canonical version.
+`STANDARDS_VERSION` is the canonical version. Release Please will prepare releases from conventional PR titles once it is activated; until then, prepare a release by hand on a clean task branch created from current `main`:
 
-### Automated bump (recommended)
-
-1. Commit meaningful release notes under `## [Unreleased]` in `CHANGELOG.md` on the task branch.
-2. Run `bash scripts/standards_release_bump.sh patch` (or `minor` / `major`). It updates the version, configured example pins, and changelog together. `--commit` stages only modified release paths and creates the preparation commit. Set `CHANGELOG_DATE=YYYY-MM-DD` to override the release date.
-3. Review the diff, including the updated changelog TOC. Commit the preparation and open a pull request against `main`.
-4. After merge, CI validates the version, mirror, nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The same workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
-
-`--dry-run` runs the coordinated bump simulation without finalizing the changelog or committing. Only `--dry-run`, `--verbose` and `-v` are forwarded; configuration overrides and tagging options are refused. Empty changelog sections are refused before the bump. The script also refuses `main`, `develop`, detached HEADs, and dirty trees.
-
-**Tooling:** Prefer `uv run --with bump-my-version==1.3.0 …`; otherwise install `bump-my-version==1.3.0` on `PATH`. If the tool crashes on macOS, set `BUMP_MY_VERSION_PYTHON=3.12` (see troubleshooting below).
-
-### Manual checklist
-
-1. On the task branch, set `STANDARDS_VERSION`, `.bumpversion.toml` `current_version`, and every pin listed in that configuration to the same new version.
+1. Set `STANDARDS_VERSION` and every pin marked `x-release-please-version` to the same new version. `scripts/tests/test_release_version_sync.py` fails if a marked pin differs or a current-version pin lacks its marker.
 2. Move release notes into the unique matching `## [X.Y.Z] - YYYY-MM-DD` changelog section, retaining an empty `Unreleased` section and updating the TOC.
-3. Commit, open a pull request against `main`, and let CI create the tag and release after merge. Do not tag or publish locally. `scripts/publish_github_release.py --dry-run` remains available to preview notes; local publication is refused once the release policy is present.
+3. Commit, open a pull request against `main`, and let CI create the tag and release after merge. Do not tag or publish locally.
 
-Initial adoption keeps version v5.2.0 and creates no tag. App access and tag protections are activated separately through `github-config` before a subsequent release is prepared.
+After merge, CI validates the version, the nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The same workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
+
+**Version markers:** the Release Please Generic updater replaces the first SemVer of each marked line. Mark only the line holding the standards pin: `<!-- x-release-please-version -->` at the end of a prose line, ` # x-release-please-version` on a pin or `copier copy --vcs-ref` line in a copyable YAML or shell example, and `{# x-release-please-version #}` directly after the template pin so the rendered workflow carries no comment or trailing space.
 
 **Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
-
-### Troubleshooting: bump-my-version on macOS
-
-If **`bash scripts/standards_release_bump.sh …`** dies with **`Segmentation fault: 11`** (sometimes after a **CoreFoundation** / **“process has forked … YOU MUST exec()”** message), typical causes are:
-
-1. **Very new CPython** (for example **3.14** as the default **`python3`**) plus **`bump-my-version`**’s stack (**`pydantic-core`**, **`httpx`**, etc.). Wheels and extension modules may still be catching up; a **native** bug often shows up as **SIGSEGV** rather than a clean Python traceback.
-2. **`uv run`** on **macOS** in a **sandboxed** or unusual environment (some IDE terminals, security tools, or **`sandbox-exec`** policies) stressing **SystemConfiguration** / network stacks; see upstream discussion around **`uv`** and macOS sandboxes ([astral-sh/uv#17799](https://github.com/astral-sh/uv/issues/17799) and linked issues).
-
-**What to try (in order):**
-
-- **Pin the interpreter for the bump only:**  
-  **`BUMP_MY_VERSION_PYTHON=3.12 bash scripts/standards_release_bump.sh patch`**  
-  When **`uv`** is on **`PATH`**, the script passes that value to **`uv run --python …`** so **`bump-my-version==1.3.0`** runs on a stable runtime (**`uv`** can install a managed **3.12** if needed). Without **`uv`**, install **`bump-my-version==1.3.0`** on a **3.11–3.12** environment and ensure **`bump-my-version`** on **`PATH`** uses that same interpreter.
-- **Skip `uv`:** install **`bump-my-version==1.3.0`** into a **venv** with **3.12**, activate it, run **`bump-my-version bump …`** by hand, then **`python3 scripts/finalize_standards_changelog.py`** from the repo root (see the automated bump steps above).
-- **Last resort (not recommended long-term):** some macOS **fork-safety** warnings go away with **`OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`**; treat this as a diagnostic knob, not a fix for a segfaulting native extension.
-
-If **`bump-my-version bump --dry-run`** succeeds but a real bump crashes, the failure is likely in a code path that edits files or runs **git**—still try an older **Python** first.
 
 ## History
 

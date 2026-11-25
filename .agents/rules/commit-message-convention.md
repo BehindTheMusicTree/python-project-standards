@@ -14,6 +14,7 @@ Allowed types:
 - `chore`
 - `style`
 - `perf`
+- `ci`
 
 Rules:
 

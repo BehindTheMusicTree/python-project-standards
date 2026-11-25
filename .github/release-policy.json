@@ -4,13 +4,7 @@
     "path": "STANDARDS_VERSION",
     "format": "text"
   },
-  "mirrors": [
-    {
-      "path": ".bumpversion.toml",
-      "format": "toml",
-      "key": "tool.bumpversion.current_version"
-    }
-  ],
+  "mirrors": [],
   "tag_prefix": "v",
   "changelog": "CHANGELOG.md",
   "outputs": {
