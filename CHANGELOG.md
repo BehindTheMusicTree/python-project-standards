@@ -2,40 +2,7 @@
 
 All notable changes to this standards repository will be documented in this file.
 
-The format is inspired by Keep a Changelog and follows semantic-style versioning for standards releases.
-
-## Table of Contents
-
-- [Unreleased](#unreleased)
-- [5.2.1 - 2026-11-25](#521---2026-11-25)
-- [5.2.0 - 2026-10-31](#520---2026-10-31)
-- [5.1.0 - 2026-09-24](#510---2026-09-24)
-- [5.0.0 - 2026-09-24](#500---2026-09-24)
-- [4.3.2 - 2026-04-13](#432---2026-04-13)
-- [4.3.1 - 2026-04-12](#431---2026-04-12)
-- [4.3.0 - 2026-04-12](#430---2026-04-12)
-- [4.2.0 - 2026-04-12](#420---2026-04-12)
-- [4.1.1 - 2026-04-12](#411---2026-04-12)
-- [4.1.0 - 2026-04-11](#410---2026-04-11)
-- [4.0.0 - 2026-04-11](#400---2026-04-11)
-- [3.1.0 - 2026-04-11](#310---2026-04-11)
-- [3.0.1 - 2026-04-13](#301---2026-04-13)
-- [3.0.0 - 2026-04-12](#300---2026-04-12)
-- [2.3.0 - 2026-04-11](#230---2026-04-11)
-- [2.2.0 - 2026-04-10](#220---2026-04-10)
-- [2.1.0 - 2026-04-09](#210---2026-04-09)
-- [2.0.0 - 2026-04-09](#200---2026-04-09)
-- [1.0.0 - 2026-04-09](#100---2026-04-09)
-
-## [Unreleased]
-
-### Changed
-
-- Prepare the move to Release Please: mark the seven standards pins with `x-release-please-version`, add the `pr-title` check and a suspended `release-please` job, and check that marked pins match `STANDARDS_VERSION`.
-
-### Removed
-
-- The manual bump path (`scripts/standards_release_bump.sh`, `scripts/finalize_standards_changelog.py`, `scripts/publish_github_release.py` and `.bumpversion.toml`) and the `.bumpversion.toml` mirror in the release policy. CI already owns tagging and publication.
+Release Please generates versioned entries from conventional PR titles; earlier entries were written by hand.
 
 ## [5.2.1] - 2026-11-25
 

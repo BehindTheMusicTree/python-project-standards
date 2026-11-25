@@ -46,13 +46,11 @@ Each GitHub Release (and matching `CHANGELOG.md` section) should make adoption s
 
 ## Releasing (maintainers)
 
-`STANDARDS_VERSION` is the canonical version. Release Please will prepare releases from conventional PR titles once it is activated; until then, prepare a release by hand on a clean task branch created from current `main`:
+`STANDARDS_VERSION` is the canonical version. Release Please (`release-please-config.json`, `.release-please-manifest.json`, job `release-please` in `.github/workflows/release-tag.yml`) maintains a release PR from conventional PR titles; never bump, tag or publish by hand.
 
-1. Set `STANDARDS_VERSION` and every pin marked `x-release-please-version` to the same new version. `scripts/tests/test_release_version_sync.py` fails if a marked pin differs or a current-version pin lacks its marker.
-2. Move release notes into the unique matching `## [X.Y.Z] - YYYY-MM-DD` changelog section, retaining an empty `Unreleased` section and updating the TOC.
-3. Commit, open a pull request against `main`, and let CI create the tag and release after merge. Do not tag or publish locally.
-
-After merge, CI validates the version, the nonempty changelog section and main ancestry, then creates an annotated tag on that exact commit. The same workflow publishes the GitHub release from those notes. Rerun the failed workflow to recover; an existing release is retained.
+1. Merge PRs titled `feat:`/`fix:` (and `!` for breaking changes); `ci:`, `docs:`, `chore:` and similar titles do not open a release.
+2. Release Please updates `STANDARDS_VERSION`, every pin marked `x-release-please-version` and `CHANGELOG.md` in its release PR. `scripts/tests/test_release_version_sync.py` fails if a marked pin differs or a current-version pin lacks its marker.
+3. Merge the release PR; CI creates the tag and publishes the GitHub Release from the generated notes. Rerun a failed workflow to recover; an existing release is retained.
 
 **Version markers:** the Release Please Generic updater replaces the first SemVer of each marked line. Mark only the line holding the standards pin: `<!-- x-release-please-version -->` at the end of a prose line, ` # x-release-please-version` on a pin or `copier copy --vcs-ref` line in a copyable YAML or shell example, and `{# x-release-please-version #}` directly after the template pin so the rendered workflow carries no comment or trailing space.
 

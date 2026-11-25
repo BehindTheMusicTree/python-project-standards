@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "include-component-in-tag": false,
+      "version-file": "STANDARDS_VERSION",
+      "extra-files": [
+        "README.md",
+        "docs/migration-guide.md",
+        "docs/reusable-workflows.md",
+        "template/.github/workflows/{% if reusable_lint %}lint.yml{% endif %}.jinja"
+      ]
+    }
+  }
+}
