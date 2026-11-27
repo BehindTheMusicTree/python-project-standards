@@ -50,11 +50,11 @@ Each GitHub Release (and matching `CHANGELOG.md` section) should make adoption s
 
 1. Merge PRs titled `feat:`/`fix:` (and `!` for breaking changes); `ci:`, `docs:`, `chore:` and similar titles do not open a release.
 2. Release Please updates `STANDARDS_VERSION`, every pin marked `x-release-please-version` and `CHANGELOG.md` in its release PR. `scripts/tests/test_release_version_sync.py` fails if a marked pin differs or a current-version pin lacks its marker.
-3. Merge the release PR; CI creates the tag and publishes the GitHub Release from the generated notes. Rerun a failed workflow to recover; an existing release is retained.
+3. CI auto-merges the release PR once the required checks pass, then creates the tag and publishes the GitHub Release from the generated notes. Rerun a failed workflow to recover; an existing release is retained.
 
 **Version markers:** the Release Please Generic updater replaces the first SemVer of each marked line. Mark only the line holding the standards pin: `<!-- x-release-please-version -->` at the end of a prose line, ` # x-release-please-version` on a pin or `copier copy --vcs-ref` line in a copyable YAML or shell example, and `{# x-release-please-version #}` directly after the template pin so the rendered workflow carries no comment or trailing space.
 
-**Frequency:** Cut a release when there is something adopters should **intentionally** pick up—not necessarily for every doc typo. Batch small doc fixes into the next **PATCH** or **MINOR** as appropriate.
+**Frequency:** Every merged `feat:`/`fix:` PR releases; title doc-only fixes `docs:` so they ride the next release.
 
 ## History
 
